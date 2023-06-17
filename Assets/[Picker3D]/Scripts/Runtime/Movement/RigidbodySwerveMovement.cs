@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Picker3D.Movement 
 {
@@ -37,7 +38,7 @@ namespace Picker3D.Movement
 
         protected virtual void CheckInput()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 IsFingerDown = true;
                 FingerPosition = Input.mousePosition;

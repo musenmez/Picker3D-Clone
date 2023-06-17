@@ -1,4 +1,5 @@
-﻿using Picker3D.Movement;
+﻿using Picker3D.Managers;
+using Picker3D.Movement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,12 +18,14 @@ namespace Picker3D.Player
 
         private void OnEnable()
         {
+            LevelManager.Instance.OnLevelStarted.AddListener(OnLevelStarted);
             Player.OnDepositStarted.AddListener(OnDepositStarted);
             Player.OnDepositCompleted.AddListener(OnDepositCompleted);
         }
 
         private void OnDisable()
         {
+            LevelManager.Instance.OnLevelStarted.RemoveListener(OnLevelStarted);
             Player.OnDepositStarted.RemoveListener(OnDepositStarted);
             Player.OnDepositCompleted.RemoveListener(OnDepositCompleted);
         }
@@ -31,6 +34,11 @@ namespace Picker3D.Player
         {
             IsForwardMovementEnabled = false;
             IsSwerveEnabled = true;
+        }
+
+        private void OnLevelStarted() 
+        {
+            IsForwardMovementEnabled = true;
         }
 
         private void OnDepositStarted() 
