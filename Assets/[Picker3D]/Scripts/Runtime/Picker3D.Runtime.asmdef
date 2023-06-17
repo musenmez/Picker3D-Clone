@@ -1,3 +1,15 @@
-﻿{
-	"name": "Picker3D.Runtime"
+{
+    "name": "Picker3D.Runtime",
+    "references": [
+        "GUID:4307f53044263cf4b835bd812fc161a4"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
