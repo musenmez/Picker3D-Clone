@@ -2,36 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Picker3D.Managers;
 
-namespace Picker3D.Player 
+namespace Picker3D.PlayerSystem 
 {
     public class Player : MonoBehaviour
     {
-        public static Player Instance;
         public bool IsForwardMovementEnabled { get; private set; }
-        public bool IsSwerveEnabled { get; private set; }       
-
-        [HideInInspector]
-        public UnityEvent OnDepositStarted = new UnityEvent();
-        [HideInInspector]
-        public UnityEvent OnDepositCompleted = new UnityEvent();
+        public bool IsSwerveEnabled { get; private set; }          
 
         private void Awake()
         {
-            Instance = this;
+            PlayerManager.Instance.SetPlayer(this);
             Initialize();
         }
 
         private void OnEnable()
         {
-            OnDepositStarted.AddListener(StartDeposit);
-            OnDepositCompleted.AddListener(CompleteDeposit);
+            PlayerManager.Instance.OnDepositStarted.AddListener(StartDeposit);
+            PlayerManager.Instance.OnDepositCompleted.AddListener(CompleteDeposit);
         }
 
         private void OnDisable()
         {
-            OnDepositStarted.RemoveListener(StartDeposit);
-            OnDepositCompleted.RemoveListener(CompleteDeposit);
+            PlayerManager.Instance.OnDepositStarted.RemoveListener(StartDeposit);
+            PlayerManager.Instance.OnDepositCompleted.RemoveListener(CompleteDeposit);
         }        
 
         private void Initialize() 

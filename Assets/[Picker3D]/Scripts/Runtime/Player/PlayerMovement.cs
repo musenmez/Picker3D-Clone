@@ -4,13 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Picker3D.Player 
+namespace Picker3D.PlayerSystem 
 {
     public class PlayerMovement : RigidbodySwerveMovement
     {
-        private Player _player;
-        private Player Player => _player == null ? _player = GetComponent<Player>() : _player;
-
         private void Awake()
         {
             Initialize();
@@ -19,15 +16,15 @@ namespace Picker3D.Player
         private void OnEnable()
         {
             LevelManager.Instance.OnLevelStarted.AddListener(OnLevelStarted);
-            Player.OnDepositStarted.AddListener(OnDepositStarted);
-            Player.OnDepositCompleted.AddListener(OnDepositCompleted);
+            PlayerManager.Instance.OnDepositStarted.AddListener(OnDepositStarted);
+            PlayerManager.Instance.OnDepositCompleted.AddListener(OnDepositCompleted);
         }
 
         private void OnDisable()
         {
             LevelManager.Instance.OnLevelStarted.RemoveListener(OnLevelStarted);
-            Player.OnDepositStarted.RemoveListener(OnDepositStarted);
-            Player.OnDepositCompleted.RemoveListener(OnDepositCompleted);
+            PlayerManager.Instance.OnDepositStarted.RemoveListener(OnDepositStarted);
+            PlayerManager.Instance.OnDepositCompleted.RemoveListener(OnDepositCompleted);
         }
 
         private void Initialize() 
