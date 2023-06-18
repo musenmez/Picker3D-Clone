@@ -8,19 +8,20 @@ namespace Picker3D.Managers
 {
     public class LevelManager : Singleton<LevelManager>
     {
-        public bool IsLevelStarted { get; private set; }
-
-        [HideInInspector]
-        public UnityEvent OnLevelStarted = new UnityEvent();
+        public bool IsLevelStarted { get; private set; }       
+        public UnityEvent OnLevelStarted { get; } = new UnityEvent();
+        public UnityEvent OnLevelFailed{ get; } = new UnityEvent();
 
         private void OnEnable()
         {
             InputManager.Instance.OnTouched.AddListener(StartLevel);
+            PlayerManager.Instance.OnDepositFailed.AddListener(FailLevel);
         }
 
         private void OnDisable()
         {
             InputManager.Instance.OnTouched.RemoveListener(StartLevel);
+            PlayerManager.Instance.OnDepositFailed.RemoveListener(FailLevel);
         }
 
         private void StartLevel() 
@@ -30,6 +31,11 @@ namespace Picker3D.Managers
 
             IsLevelStarted = true;
             OnLevelStarted.Invoke();
+        }
+
+        private void FailLevel() 
+        {
+            OnLevelFailed.Invoke();
         }
     }
 }

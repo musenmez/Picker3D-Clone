@@ -15,37 +15,40 @@ namespace Picker3D.PlayerSystem
 
         private void OnEnable()
         {
-            LevelManager.Instance.OnLevelStarted.AddListener(OnLevelStarted);
-            PlayerManager.Instance.OnDepositStarted.AddListener(OnDepositStarted);
-            PlayerManager.Instance.OnDepositCompleted.AddListener(OnDepositCompleted);
+            LevelManager.Instance.OnLevelStarted.AddListener(() => SetForwardMovement(true));
+            LevelManager.Instance.OnLevelFailed.AddListener(DisableAllMovements);
+            PlayerManager.Instance.OnDepositStarted.AddListener(() => SetForwardMovement(false));
+            PlayerManager.Instance.OnDepositCompleted.AddListener(() => SetForwardMovement(true));            
         }
 
         private void OnDisable()
         {
-            LevelManager.Instance.OnLevelStarted.RemoveListener(OnLevelStarted);
-            PlayerManager.Instance.OnDepositStarted.RemoveListener(OnDepositStarted);
-            PlayerManager.Instance.OnDepositCompleted.RemoveListener(OnDepositCompleted);
+            LevelManager.Instance.OnLevelStarted.RemoveListener(() => SetForwardMovement(true));
+            LevelManager.Instance.OnLevelFailed.RemoveListener(DisableAllMovements);
+            PlayerManager.Instance.OnDepositStarted.RemoveListener(() => SetForwardMovement(false));
+            PlayerManager.Instance.OnDepositCompleted.RemoveListener(() => SetForwardMovement(true));
         }
 
         private void Initialize() 
         {
-            IsForwardMovementEnabled = false;
-            IsSwerveEnabled = true;
+            SetForwardMovement(false);
+            SetSwerve(true);
+        }  
+
+        private void DisableAllMovements() 
+        {
+            SetForwardMovement(false);
+            SetSwerve(false);
         }
 
-        private void OnLevelStarted() 
+        private void SetForwardMovement(bool isEnabled) 
         {
-            IsForwardMovementEnabled = true;
+            IsForwardMovementEnabled = isEnabled;
         }
 
-        private void OnDepositStarted() 
+        private void SetSwerve(bool isEnabled) 
         {
-            IsForwardMovementEnabled = false;
-        }
-
-        private void OnDepositCompleted() 
-        {
-            IsForwardMovementEnabled = true;
+            IsSwerveEnabled = isEnabled;
         }
     }
 }

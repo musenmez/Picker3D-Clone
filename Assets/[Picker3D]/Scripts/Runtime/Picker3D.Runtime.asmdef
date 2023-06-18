@@ -2,7 +2,8 @@
     "name": "Picker3D.Runtime",
     "references": [
         "GUID:4307f53044263cf4b835bd812fc161a4",
-        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:fbc83fbde19475b4d950826414325a1d"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
