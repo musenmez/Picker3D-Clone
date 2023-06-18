@@ -25,6 +25,7 @@ namespace Picker3D.DepositAreaSystem
         private const float LEFT_BARRIER_ANGLE = 60f;
         private const float RIGHT_BARRIER_ANGLE = -60f;
         private const float BARRIER_DURATION = 1f;
+        private const float BARRIER_DELAY = 0.5f;
         private const Ease BARRIER_EASE = Ease.Linear;
 
         private void Awake()
@@ -57,7 +58,7 @@ namespace Picker3D.DepositAreaSystem
         private void BarrierTween(Transform barrier, float endValue, Action onComplete = null) 
         {
             barrier.DOKill();
-            barrier.DOLocalRotate(Vector3.right * endValue, BARRIER_DURATION).SetEase(BARRIER_EASE).OnComplete(() => onComplete?.Invoke());
+            barrier.DOLocalRotate(Vector3.forward * endValue, BARRIER_DURATION).SetEase(BARRIER_EASE).SetDelay(BARRIER_DELAY).OnComplete(() => onComplete?.Invoke());
         }
     }
 }

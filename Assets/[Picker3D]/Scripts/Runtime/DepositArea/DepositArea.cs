@@ -20,7 +20,7 @@ namespace Picker3D.DepositAreaSystem
         public UnityEvent OnDepositFailed { get; private set; } = new UnityEvent();
         public UnityEvent OnCollectableAmountChanged { get; private set; } = new UnityEvent();        
 
-        public const float DEPOSIT_DURATION = 3f;
+        public const float DEPOSIT_DURATION = 2.5f;
 
         [SerializeField] private int requiredCollectable;        
 

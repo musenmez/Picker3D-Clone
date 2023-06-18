@@ -17,7 +17,7 @@ namespace Picker3D.DepositAreaSystem
         [SerializeField] private Transform body;
 
         private const Ease MOVEMENT_EASE = Ease.InOutBack;
-        private const float MOVEMENT_DURATION = 0.5f;
+        private const float MOVEMENT_DURATION = 1f;
 
         private Tween _movementTween;
 
