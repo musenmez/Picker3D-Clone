@@ -6,7 +6,8 @@ namespace Picker3D.Interfaces
 {
     public interface ICollectable
     {
-        void Dispose();
+        bool IsCollected { get; }
+        void Collect();
     }
 }
 
