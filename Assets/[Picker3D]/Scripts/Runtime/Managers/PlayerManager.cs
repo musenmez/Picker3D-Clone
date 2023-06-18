@@ -10,13 +10,10 @@ namespace Picker3D.Managers
     public class PlayerManager : Singleton<PlayerManager>
     {
         public Player CurrentPlayer { get; private set; }
-
-        [HideInInspector]
-        public UnityEvent OnDepositStarted = new UnityEvent();
-        [HideInInspector]
-        public UnityEvent OnDepositCompleted = new UnityEvent();
-        [HideInInspector]
-        public UnityEvent OnDepositFailed = new UnityEvent();
+        
+        public UnityEvent OnDepositStarted { get; private set; } = new UnityEvent();      
+        public UnityEvent OnDepositCompleted { get; private set; } = new UnityEvent();        
+        public UnityEvent OnDepositFailed { get; private set; } = new UnityEvent();
 
         public void SetPlayer(Player player) 
         {

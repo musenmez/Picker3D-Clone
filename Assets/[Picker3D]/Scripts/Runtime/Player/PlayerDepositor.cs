@@ -8,7 +8,7 @@ namespace Picker3D.PlayerSystem
 {
     public class PlayerDepositor : MonoBehaviour, IDepositor
     {
-        public bool IsAvailable {get; private set;}
+        public bool IsAvailable { get; private set; } = true;        
 
         private void OnTriggerEnter(Collider other)
         {
@@ -29,7 +29,7 @@ namespace Picker3D.PlayerSystem
         {
             IsAvailable = false;
             PlayerManager.Instance.OnDepositFailed.Invoke();
-        }
+        }       
 
         private void StartDeposit(IDepositArea depositArea) 
         {
@@ -38,6 +38,7 @@ namespace Picker3D.PlayerSystem
 
             IsAvailable = false;
             depositArea.StartDeposit(this);
+            PlayerManager.Instance.OnDepositStarted.Invoke();
         }
     }
 }
