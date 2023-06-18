@@ -18,7 +18,7 @@ namespace Picker3D.DepositAreaSystem
         public UnityEvent OnDepositStarted { get; private set; } = new UnityEvent();
         public UnityEvent OnDepositCompleted { get; private set; } = new UnityEvent();
         public UnityEvent OnDepositFailed { get; private set; } = new UnityEvent();
-        public UnityEvent OnCollectableAmountChanged { get; private set; } = new UnityEvent();
+        public UnityEvent OnCollectableAmountChanged { get; private set; } = new UnityEvent();        
 
         public const float DEPOSIT_DURATION = 3f;
 
