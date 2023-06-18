@@ -1,0 +1,17 @@
+{
+    "name": "Picker3D.Editor",
+    "references": [
+        "GUID:7bfde3c3953ffc64d886df3bdc0d7a1f"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
