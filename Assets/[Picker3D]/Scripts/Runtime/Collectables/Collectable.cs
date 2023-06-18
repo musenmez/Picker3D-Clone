@@ -14,7 +14,8 @@ namespace Picker3D.Collectables
         public bool IsCollected { get; private set; }
         public UnityEvent OnCollected { get; private set; } = new UnityEvent();        
 
-        private const float DISPOSE_DELAY = 1f;
+        private const float MIN_DISPOSE_DELAY = 0.75f;
+        private const float MAX_DISPOSE_DELAY = 1.25f;      
 
         public void Collect()
         {
@@ -28,7 +29,8 @@ namespace Picker3D.Collectables
 
         private void Dispose() 
         {
-            DOVirtual.DelayedCall(DISPOSE_DELAY, () => gameObject.SetActive(false));
+            float disposeDuration = Random.Range(MIN_DISPOSE_DELAY, MAX_DISPOSE_DELAY);            
+            DOVirtual.DelayedCall(disposeDuration, () => gameObject.SetActive(false));
         }
     }
 }
