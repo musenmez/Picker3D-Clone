@@ -7,12 +7,14 @@ using UnityEngine.Events;
 
 namespace Picker3D.Collectables 
 {
-    public class Collectable : MonoBehaviour, ICollectable
+    public class Collectable : MonoBehaviour, ICollectable, IThrowable
     {
+        private Rigidbody _rigidbody;
+        public Rigidbody Rigidbody => _rigidbody == null ? _rigidbody = GetComponent<Rigidbody>() : _rigidbody;
         public bool IsCollected { get; private set; }
-        public UnityEvent OnCollected { get; private set; } = new UnityEvent();
+        public UnityEvent OnCollected { get; private set; } = new UnityEvent();        
 
-        private const float DISPOSE_DELAY = 0.5f;
+        private const float DISPOSE_DELAY = 1f;
 
         public void Collect()
         {
