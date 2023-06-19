@@ -9,16 +9,26 @@ namespace Picker3D.Runtime
     public class Level : MonoBehaviour
     {
         private List<Platform> _platforms;
-        private List<Platform> Platforms { get => _platforms == null ? _platforms = GetComponentsInChildren<Platform>().ToList() : _platforms; set => _platforms = value; } 
+        private List<Platform> Platforms
+        {
+            get
+            {
+                if (_platforms == null || _platforms.Count == 0)
+                {
+                    _platforms = GetComponentsInChildren<Platform>().ToList();
+                    SortPlatforms();
+                }
+                return _platforms;
+            }
+            set 
+            {
+                _platforms = value;
+            } 
+        } 
         public Transform PlayerStartPoint => playerStartPoint;
         public UnityEvent OnInitialized { get; } = new UnityEvent();
 
-        [SerializeField] private Transform playerStartPoint;
-
-        private void Awake()
-        {
-            SortPlatforms();
-        }
+        [SerializeField] private Transform playerStartPoint;        
 
         public void Initialize() 
         {
@@ -27,13 +37,13 @@ namespace Picker3D.Runtime
 
         public Vector3 GetMaxPosition() 
         {
-            Platform platform = Platforms[Platforms.Count - 1];
+            Platform platform = Platforms[Platforms.Count - 1];          
             return platform.GetMaxPosition();
         }
 
         public Vector3 GetMinPosition() 
-        {
-            Platform platform = Platforms[0];
+        {            
+            Platform platform = Platforms[0];            
             return platform.GetMinPosition();
         }
 

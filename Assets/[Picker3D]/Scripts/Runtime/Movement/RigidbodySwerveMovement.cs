@@ -25,7 +25,8 @@ namespace Picker3D.Movements
 
         [SerializeField] private MovementData movementData;
 
-        protected const float MAX_SCREEN_DELTA = 100f;
+        protected const float MIN_SWERVE_AMOUNT = -0.5f;
+        protected const float MAX_SWERVE_AMOUNT = 0.5f;
 
         protected virtual void Update()
         {
@@ -92,23 +93,18 @@ namespace Picker3D.Movements
 
             // Convert back to world space
             Vector3 targetPosition = MainCamera.ScreenToWorldPoint(screenPoint);
+
             Vector3 swerveAmount = Vector3.Scale(targetPosition - Rigidbody.position, Vector3.right);
+            swerveAmount.x = Mathf.Clamp(swerveAmount.x, MIN_SWERVE_AMOUNT, MAX_SWERVE_AMOUNT);
 
             return swerveAmount;
         }
 
         protected virtual Vector2 GetScreenDelta()
         {
-            Vector2 delta = IsFingerDown ? (Vector2)Input.mousePosition - FingerPosition : Vector2.zero;
-            delta = ClampScreenDelta(delta);
+            Vector2 delta = IsFingerDown ? (Vector2)Input.mousePosition - FingerPosition : Vector2.zero;         
             return delta;
-        }
-
-        protected virtual Vector2 ClampScreenDelta(Vector2 screenDelta)
-        {
-            screenDelta.x = Mathf.Clamp(screenDelta.x, -MAX_SCREEN_DELTA / 2f, MAX_SCREEN_DELTA / 2f);
-            return screenDelta;
-        }
+        }        
 
         protected virtual Vector3 ClampPosition(Vector3 position)
         {
