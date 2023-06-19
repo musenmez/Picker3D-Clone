@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Picker3D.LevelSystem 
 {
-    public class LevelCreator : MonoBehaviour
+    public class LevelController : MonoBehaviour
     {
         public Level CurrentLevel { get; private set; }
         public Level NextLevel { get; private set; }
