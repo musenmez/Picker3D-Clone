@@ -11,8 +11,9 @@ namespace Picker3D.Pooling
         public Vector3 DefultScale { get; protected set; }
         public UnityEvent OnInitialized { get; } = new UnityEvent();
         public UnityEvent OnDisposed { get; } = new UnityEvent();
+        public PoolID PoolID { get => poolID; protected set => poolID = value; }
 
-        [field : SerializeField] public PoolID PoolID { get; protected set; }      
+        [SerializeField] private PoolID poolID;
 
         protected virtual void Awake()
         {

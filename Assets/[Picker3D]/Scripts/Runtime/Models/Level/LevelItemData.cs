@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Picker3D.Models 
 {
+    [System.Serializable]
     public class LevelItemData
     {
         public PoolID PoolID;
