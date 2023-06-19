@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-namespace Picker3D.DepositAreaSystem 
+namespace Picker3D.Runtime
 {
     public class DepositAreaText : MonoBehaviour
     {

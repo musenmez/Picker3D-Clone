@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Picker3D.DepositAreaSystem 
+namespace Picker3D.Runtime 
 {
     public class DepositArea : MonoBehaviour, IDepositArea
     {
