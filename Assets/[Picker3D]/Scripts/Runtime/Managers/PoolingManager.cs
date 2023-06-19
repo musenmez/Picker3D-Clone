@@ -27,9 +27,17 @@ namespace Picker3D.Managers
 
         public PoolObject Instantiate(PoolID poolID, Vector3 position, Quaternion rotation)
         {
-            PoolObject poolObject = GetPoolObject(poolID);
+            if (!PoolStacksByID.ContainsKey(poolID))
+            {
+                Debug.LogError("Pool with ID " + poolID + " does not exist.");
+                return null;
+            }
+
+            PoolObject poolObject = PopPoolObject(poolID);            
             poolObject.transform.SetPositionAndRotation(position, rotation);
+            poolObject.gameObject.SetActive(true);
             poolObject.Initialize();
+
             return poolObject;
         }      
 
@@ -43,38 +51,18 @@ namespace Picker3D.Managers
             poolObject.Dispose();
 
             PoolStacksByID[poolObject.PoolID].Push(poolObject);
-        }
+        }       
 
-        public PoolObject GetPoolObject(PoolID poolID)
+        private PoolObject PopPoolObject(PoolID poolID)
         {
-            if (!PoolStacksByID.ContainsKey(poolID))
+            int stackCount = PoolStacksByID[poolID].Count;
+            for (int i = 0; i < stackCount; i++)
             {
-                Debug.LogError("Pool with ID " + poolID + " does not exist.");
-                return null;
+                PoolObject poolObject = PoolStacksByID[poolID].Pop();
+                if (poolObject != null)
+                    return poolObject;
             }
-
-            PoolObject poolObject;
-
-            if (PoolStacksByID[poolID].Count == 0)
-            {
-                poolObject = CreatePoolObject(poolID);
-            }
-            else
-            {
-                poolObject = PoolStacksByID[poolID].Pop();
-            }
-
-            if (poolObject == null)
-            {
-                poolObject = CreatePoolObject(poolID);
-            }
-
-            if (poolObject != null)
-            {
-                poolObject.gameObject.SetActive(true);
-            }
-
-            return poolObject;
+            return CreatePoolObject(poolID);
         }
 
         private PoolObject CreatePoolObject(PoolID poolID)
