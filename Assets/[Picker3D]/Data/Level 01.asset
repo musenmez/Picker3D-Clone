@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 616b67e431c8d024cb6fdfc49022646a, type: 3}
-  m_Name: Pool Database
+  m_Script: {fileID: 11500000, guid: a5fede3793543854fb922bebfe9e5618, type: 3}
+  m_Name: Level 01
   m_EditorClassIdentifier: 
-  Pools:
-  - Prefab: {fileID: 0}
-    InitialSize: 0
+  GroundMaterial: {fileID: 0}
+  BorderMaterial: {fileID: 0}
