@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Picker3D.Models 
 {
-    [CreateAssetMenu(fileName = "Movement Data", menuName = "Picker3D/Data/Movement Data")]
+    [CreateAssetMenu(fileName = "Level Data", menuName = "Picker3D/Data/Level Data")]
     public class LevelData : ScriptableObject
     {
         public Material platformGroundMaterial;

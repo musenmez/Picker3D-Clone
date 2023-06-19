@@ -17,7 +17,7 @@ namespace Picker3D.Managers
         private Dictionary<PoolID, Pool> _poolsByID = new Dictionary<PoolID, Pool>();
         public Dictionary<PoolID, Pool> PoolsByID { get => _poolsByID; private set => _poolsByID = value; }
 
-        [SerializeField] private List<Pool> pools = new List<Pool>();
+        [SerializeField] private PoolDatabase poolDatabase;
 
         private void Awake()
         {
@@ -79,29 +79,29 @@ namespace Picker3D.Managers
 
         private void SetInitialPoolStacks()
         {
-            foreach (Pool pool in pools)
+            foreach (Pool pool in poolDatabase.Pools)
             {
-                if (PoolStacksByID.ContainsKey(pool.PoolID))
+                if (PoolStacksByID.ContainsKey(pool.Prefab.PoolID))
                     continue;
 
                 Stack<PoolObject> poolStack = new Stack<PoolObject>();
                 for (int i = 0; i < pool.InitialSize; i++)
                 {
-                    PoolObject poolObject = CreatePoolObject(pool.PoolID);
+                    PoolObject poolObject = CreatePoolObject(pool.Prefab.PoolID);
                     poolStack.Push(poolObject);
                 }
 
-                PoolStacksByID.Add(pool.PoolID, poolStack);
+                PoolStacksByID.Add(pool.Prefab.PoolID, poolStack);
             }
         }
 
         private void SetPoolCollection()
         {
-            foreach (var pool in pools)
+            foreach (var pool in poolDatabase.Pools)
             {
-                if (!PoolsByID.ContainsKey(pool.PoolID))
+                if (!PoolsByID.ContainsKey(pool.Prefab.PoolID))
                 {
-                    PoolsByID.Add(pool.PoolID, pool);
+                    PoolsByID.Add(pool.Prefab.PoolID, pool);
                 }
             }
         }

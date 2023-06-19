@@ -6,9 +6,9 @@ using UnityEngine;
 
 namespace Picker3D.Models 
 {
+    [System.Serializable]
     public class Pool
-    {
-        public PoolID PoolID;
+    {        
         public PoolObject Prefab;
         public int InitialSize;
     }
