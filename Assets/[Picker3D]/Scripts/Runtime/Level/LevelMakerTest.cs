@@ -35,5 +35,9 @@ public class LevelMakerTest : MonoBehaviour
 
         levelData.DepositItemDatas = depositItemDatas;
         levelData.LevelItemDatas = levelItemDatas;
+
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(levelData);
+#endif
     }
 }
