@@ -13,5 +13,15 @@ MonoBehaviour:
   m_Name: Pool Database
   m_EditorClassIdentifier: 
   Pools:
-  - Prefab: {fileID: 0}
-    InitialSize: 0
+  - Prefab: {fileID: 9108995469115892887, guid: d34868dcb34f8ba419fbf16b2b361566,
+      type: 3}
+    InitialSize: 10
+  - Prefab: {fileID: 5329334166129207642, guid: 3d2ca67eb5ee72344b9a5c9814027a5e,
+      type: 3}
+    InitialSize: 5
+  - Prefab: {fileID: 4926610009059776091, guid: fd5bd44bc3f014f4c9d7fd84a739576f,
+      type: 3}
+    InitialSize: 10
+  - Prefab: {fileID: 7650910694535786928, guid: 38c69ac1b9c8fcc41b8d98c5ee4051e9,
+      type: 3}
+    InitialSize: 50

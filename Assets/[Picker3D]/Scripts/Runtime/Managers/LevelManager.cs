@@ -4,41 +4,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Picker3D.Runtime;
+using NaughtyAttributes;
+using Picker3D.Models;
 
 namespace Picker3D.Managers 
 {
     public class LevelManager : Singleton<LevelManager>
     {
-        public static int CurrentLevelIndex 
+        public static int CurrentLevel 
         {
             get 
             {
-                return PlayerPrefs.GetInt(PlayerPrefsKeys.CurrentLevelIndex, 1);    
+                return PlayerPrefs.GetInt(PlayerPrefsKeys.CurrentLevel, 1);    
             }
             private set 
             {
-                PlayerPrefs.SetInt(PlayerPrefsKeys.CurrentLevelIndex, value);
+                PlayerPrefs.SetInt(PlayerPrefsKeys.CurrentLevel, value);
             }
         }
 
-        public static int CurrentLevelPrefabIndex
+        public static int CurrentLevelDataIndex
         {
             get
             {
-                return PlayerPrefs.GetInt(PlayerPrefsKeys.CurrentLevelPrefabIndex, 0);
+                return PlayerPrefs.GetInt(PlayerPrefsKeys.CurrentLevelDataIndex, 0);
             }
             private set
             {
-                PlayerPrefs.SetInt(PlayerPrefsKeys.CurrentLevelPrefabIndex, value);
+                PlayerPrefs.SetInt(PlayerPrefsKeys.CurrentLevelDataIndex, value);
             }
         }
 
         public bool IsLevelStarted { get; private set; }
-        public List<Level> LevelPrefabs => levelPrefabs;
+        public List<LevelData> Levels => levels;
         public UnityEvent OnLevelStarted { get; } = new UnityEvent();
         public UnityEvent OnLevelFailed{ get; } = new UnityEvent();
 
-        [SerializeField] private List<Level> levelPrefabs = new List<Level>();
+        [ReorderableList]
+        [SerializeField] private List<LevelData> levels = new List<LevelData>();
 
         private void OnEnable()
         {

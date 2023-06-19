@@ -39,7 +39,7 @@ namespace Picker3D.Managers
             poolObject.Initialize();
 
             return poolObject;
-        }      
+        }         
 
         public void DestroyPoolObject(PoolObject poolObject)
         {

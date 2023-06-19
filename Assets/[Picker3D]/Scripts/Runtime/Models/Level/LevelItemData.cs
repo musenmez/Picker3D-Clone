@@ -10,10 +10,10 @@ namespace Picker3D.Models
     {
         public PoolID PoolID;
         public Vector3 Position;
-        public Vector3 Rotation;
+        public Quaternion Rotation;
         public Vector3 Scale;
 
-        public LevelItemData(PoolID poolID, Vector3 position, Vector3 rotation, Vector3 scale) 
+        public LevelItemData(PoolID poolID, Vector3 position, Quaternion rotation, Vector3 scale) 
         {
             PoolID = poolID;
             Position = position;

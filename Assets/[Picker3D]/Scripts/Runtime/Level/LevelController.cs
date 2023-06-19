@@ -11,11 +11,13 @@ namespace Picker3D.Runtime
     {
         public Level CurrentLevel { get; private set; }
         public Level NextLevel { get; private set; }
-        private int CurrentLevelPrefabIndex => LevelManager.CurrentLevelPrefabIndex;
-        private int CurrentLevelIndex => LevelManager.CurrentLevelIndex;
-        private List<Level> LevelPrefabs => LevelManager.Instance.LevelPrefabs;
+        private int CurrentLevelDataIndex => LevelManager.CurrentLevelDataIndex;
+        private int CurrentLevelIndex => LevelManager.CurrentLevel;
+        private List<LevelData> LevelDatas => LevelManager.Instance.Levels;
 
-        [SerializeField] private Transform levelParent;       
+        [SerializeField] private Transform levelParent;
+        
+        private const string LEVEL_NAME_PREFIX = "LEVEL ";
 
         private void Awake()
         {
@@ -24,41 +26,53 @@ namespace Picker3D.Runtime
 
         private void Initialize() 
         {
-            int index = Mathf.Clamp(CurrentLevelPrefabIndex, 0, LevelPrefabs.Count - 1);
-            Level currentLevelPrefab = LevelPrefabs[index];
-            float offset = (currentLevelPrefab.PlayerStartPoint.position - currentLevelPrefab.transform.position).z;
-            CurrentLevel = CreateLevel(Vector3.back * offset, currentLevelPrefab);
-
-            Level nextLevelPrefab = GetNextLevelPrefab();
-            float offet = (nextLevelPrefab.transform.position - nextLevelPrefab.GetMinPosition()).z;
-            NextLevel = CreateLevel(CurrentLevel.GetMaxPosition() + Vector3.forward * offet, nextLevelPrefab);
+            CreateCurrentLevel();
+            CreateNextLevel();
         }
 
-        private Level CreateLevel(Vector3 position, Level prefab) 
-        {
-            Level level = Instantiate(prefab, position, Quaternion.identity, levelParent);
-            return level;
+        private void CreateCurrentLevel() 
+        {           
+            LevelData levelData = GetLevelData(CurrentLevelDataIndex);
+            GameObject level = new GameObject(LEVEL_NAME_PREFIX + CurrentLevelIndex);
+            level.transform.SetParent(levelParent);
+
+            CurrentLevel = level.AddComponent<Level>();
+            CurrentLevel.Initialize(levelData);
         }
 
-        private Level GetNextLevelPrefab() 
+        private void CreateNextLevel() 
         {
-            if (LevelPrefabs.Count == 1)
+            LevelData levelData = GetLevelData(CurrentLevelDataIndex + 1);
+            GameObject level = new GameObject(LEVEL_NAME_PREFIX + (CurrentLevelIndex + 1));            
+            level.transform.SetParent(levelParent);
+
+            NextLevel = level.AddComponent<Level>();
+            NextLevel.Initialize(levelData);
+
+            float offet = (NextLevel.transform.position - NextLevel.GetMinPosition()).z;
+            Vector3 position = CurrentLevel.GetMaxPosition() + Vector3.forward * offet;
+            NextLevel.transform.position = position;
+        }
+
+        private LevelData GetLevelData(int levelDataIndex) 
+        {
+            if (LevelDatas.Count == 1)
             {
-                return LevelPrefabs[0];
+                return LevelDatas[0];
             }
 
-            if (LevelManager.CurrentLevelIndex < LevelPrefabs.Count - 1) 
+            if (levelDataIndex < LevelDatas.Count - 1)
             {
-                return LevelPrefabs[LevelManager.CurrentLevelIndex];
-            }            
+                return LevelDatas[levelDataIndex];
+            }
 
-            List<Level> levelPrefabs = new List<Level>(LevelPrefabs);
-            levelPrefabs.RemoveAt(CurrentLevelPrefabIndex);
+            List<LevelData> levelDatas = new List<LevelData>(LevelDatas);
+            levelDatas.RemoveAt(CurrentLevelDataIndex);
 
             Random.InitState(CurrentLevelIndex);
-            levelPrefabs.Shuffle();          
+            levelDatas.Shuffle();
 
-            return levelPrefabs[0];
+            return levelDatas[0];
         }
     }
 }

@@ -105,6 +105,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_TinySphere
       objectReference: {fileID: 0}
+    - target: {fileID: 3584062622630026313, guid: 944882c73904082449970b706ccd6f74,
+        type: 3}
+      propertyPath: poolID
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 4862323761306130619, guid: 944882c73904082449970b706ccd6f74,
         type: 3}
       propertyPath: m_RootOrder
