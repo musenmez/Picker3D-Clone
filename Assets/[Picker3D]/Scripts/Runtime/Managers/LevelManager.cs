@@ -8,9 +8,21 @@ namespace Picker3D.Managers
 {
     public class LevelManager : Singleton<LevelManager>
     {
+        public static int CurrentLevel 
+        {
+            get 
+            {
+                return PlayerPrefs.GetInt(PlayerPrefsKeys.CurrentLevel, 1);    
+            }
+            private set 
+            {
+                PlayerPrefs.SetInt(PlayerPrefsKeys.CurrentLevel, value);
+            }
+        }
+
         public bool IsLevelStarted { get; private set; }       
         public UnityEvent OnLevelStarted { get; } = new UnityEvent();
-        public UnityEvent OnLevelFailed{ get; } = new UnityEvent();
+        public UnityEvent OnLevelFailed{ get; } = new UnityEvent();        
 
         private void OnEnable()
         {
