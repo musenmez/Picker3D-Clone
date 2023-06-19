@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Picker3D.Movement 
+namespace Picker3D.Movements 
 {
     public class RigidbodySwerveMovement : MonoBehaviour
     {
@@ -18,7 +18,8 @@ namespace Picker3D.Movement
         public MovementData MovementData => movementData;
         public Vector2 FingerPosition { get; protected set; }
         public Vector2 ScreenDelta { get; protected set; }
-        public bool IsFingerDown { get; private set; }
+        public bool IsFingerDown { get; protected set; }
+        public bool IsActive { get; protected set; } = true;
         public virtual bool IsSwerveEnabled { get; protected set; }
         public virtual bool IsForwardMovementEnabled { get; protected set; }
 
@@ -56,6 +57,9 @@ namespace Picker3D.Movement
 
         protected virtual void Movement()
         {
+            if (!IsActive)
+                return;
+
             Vector3 targetPosition = Rigidbody.position;
 
             targetPosition += GetForwardAmount();
