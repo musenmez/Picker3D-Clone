@@ -30,6 +30,13 @@ namespace Picker3D.Runtime
         public void Initialize(int requiredCollectable) 
         {
             RequiredCollectable = requiredCollectable;
+
+            IsAreaChecked = false;
+            IsCompleted = false;
+
+            CurrentCollectableAmount = 0;
+            DepositorBlockers.Clear();
+
             OnInitialized.Invoke();
         }
 

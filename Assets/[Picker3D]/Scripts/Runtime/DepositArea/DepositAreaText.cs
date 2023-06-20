@@ -20,11 +20,13 @@ namespace Picker3D.Runtime
         private void OnEnable()
         {
             DepositArea.OnCollectableAmountChanged.AddListener(UpdateText);
+            DepositArea.OnInitialized.AddListener(UpdateText);
         }
 
         private void OnDisable() 
         {
             DepositArea.OnCollectableAmountChanged.RemoveListener(UpdateText);
+            DepositArea.OnInitialized.RemoveListener(UpdateText);
         }
 
         private void UpdateText() 

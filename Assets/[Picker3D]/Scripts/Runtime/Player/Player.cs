@@ -10,8 +10,26 @@ namespace Picker3D.Runtime
     {
         private void Awake()
         {
-            PlayerManager.Instance.SetPlayer(this);         
-        } 
+            PlayerManager.Instance.SetPlayer(this);    
+            Initialize();
+        }
+
+        private void OnEnable()
+        {
+            LevelManager.Instance.OnLevelRestarted.AddListener(Initialize);
+        }
+
+        private void OnDisable()
+        {
+            LevelManager.Instance.OnLevelRestarted.RemoveListener(Initialize);
+        }
+
+        private void Initialize() 
+        {
+            Vector3 initialPosition = LevelManager.Instance.LevelController.CurrentLevel.transform.position;
+            transform.position = initialPosition;
+            PlayerManager.Instance.OnPlayerInitialized.Invoke();
+        }
     }
 }
 

@@ -16,6 +16,13 @@ namespace Picker3D.UI
         {
             LevelManager.Instance.OnLevelFailed.RemoveListener(ShowPanel);
         }
+
+        //Button Action
+        public void Restart() 
+        {
+            HidePanel();
+            LevelManager.Instance.RestartLevel();
+        }
     }
 }
 

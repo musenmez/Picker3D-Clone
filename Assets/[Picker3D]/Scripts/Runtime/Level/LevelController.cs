@@ -4,15 +4,16 @@ using Picker3D.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace Picker3D.Runtime
 {
     public class LevelController : MonoBehaviour
     {
+        public List<Level> Levels { get; private set; } = new List<Level>();
         public Level CurrentLevel => Levels[0];
-        public Level NextLevel => Levels[1];
-        public List<Level> Levels { get; private set; } = new List<Level>();       
-        private int CurrentLevelIndex => LevelManager.CurrentLevel;
+        public Level NextLevel => Levels[1];        
+        private int CurrentLevelIndex => LevelManager.CurrentLevel;      
         private List<LevelData> LevelDatas => LevelManager.Instance.Levels;
 
         [SerializeField] private Transform levelContainer;
@@ -22,43 +23,72 @@ namespace Picker3D.Runtime
 
         private void Awake()
         {
-            InitializeLevels();   
+            LevelManager.Instance.SetLevelController(this);
+            Initialize();   
         }
 
-        private void InitializeLevels() 
+        public void AddLevel(Level level) 
+        {
+            if (Levels.Contains(level))
+                return;
+
+            Levels.Add(level);
+            SortLevels();
+        }
+
+        public void RemoveLevel(Level level) 
+        {
+            if (!Levels.Contains(level))
+                return;
+
+            Levels.Remove(level);
+        }
+
+        public void RestartLevel() 
+        {
+            LevelData currentLevelData = CurrentLevel.LevelData;
+            CurrentLevel.DestroyLevel();
+            CreateLevel(CurrentLevelIndex, currentLevelData);
+        }
+
+        public void UpdateLevel() 
+        {
+            CurrentLevel.DestroyLevel();
+            int levelIndex = CurrentLevelIndex + Levels.Count;
+            CreateLevel(levelIndex);
+        }
+
+        private void Initialize() 
         {
             for (int i = 0; i < START_LEVEL_COUNT; i++)
             {
-                CreateLevel(CurrentLevelIndex + i);
+                CreateLevel(CurrentLevelIndex + i);                
             }
-        }       
+        }             
 
-        private void CreateLevel(int levelIndex) 
+        private void CreateLevel(int levelIndex, LevelData levelData = null) 
         {
-            LevelData levelData = GetLevelData(levelIndex);
+            levelData = levelData == null ? GetLevelData(levelIndex) : levelData;
 
             GameObject levelParent = new GameObject(LEVEL_NAME_PREFIX + levelIndex);
             levelParent.transform.SetParent(levelContainer);
 
             Level level = levelParent.AddComponent<Level>();
-            level.Initialize(levelData);
-            Levels.Add(level);           
+            level.Initialize(levelData, this);
 
-            if (Levels.Count == 1)
-                return;
+            int index = levelIndex - CurrentLevelIndex;
+            if (index != 0)
+            {
+                float offet = (level.transform.position - level.GetMinPosition()).z;
+                Vector3 position = Levels[index - 1].GetMaxPosition() + Vector3.forward * offet;
+                level.transform.position = position;
+            }
 
-            float offet = (level.transform.position - level.GetMinPosition()).z;           
-            Vector3 position = Levels[Levels.Count - 2].GetMaxPosition() + Vector3.forward * offet;
-            level.transform.position = position;
-        }        
+            AddLevel(level);
+        }          
 
         private LevelData GetLevelData(int levelIndex) 
         {
-            if (LevelDatas.Count == 1)
-            {
-                return LevelDatas[0];
-            }
-
             if (levelIndex < LevelDatas.Count - 1)
             {
                 return LevelDatas[levelIndex];
@@ -76,6 +106,11 @@ namespace Picker3D.Runtime
             levelDatas.Shuffle();
 
             return levelDatas[0];
+        }
+
+        private void SortLevels() 
+        {
+            Levels = Levels.OrderBy(level => level.transform.position.z).ToList();
         }
     }
 }

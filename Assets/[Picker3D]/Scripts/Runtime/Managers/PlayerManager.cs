@@ -15,6 +15,7 @@ namespace Picker3D.Managers
         public UnityEvent OnDepositFailed { get; } = new UnityEvent();
         public UnityEvent OnReachedFinishLine { get; } = new UnityEvent();
         public UnityEvent OnReachedStartPoint { get; } = new UnityEvent();
+        public UnityEvent OnPlayerInitialized { get; } = new UnityEvent();
 
         public void SetPlayer(Player player) 
         {

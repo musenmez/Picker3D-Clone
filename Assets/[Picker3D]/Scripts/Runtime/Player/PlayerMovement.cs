@@ -21,25 +21,28 @@ namespace Picker3D.Runtime
         }
 
         private void OnEnable()
-        {
+        {            
             LevelManager.Instance.OnLevelStarted.AddListener(() => SetForwardMovement(true));
-            LevelManager.Instance.OnLevelFailed.AddListener(DisableMovement);
             PlayerManager.Instance.OnDepositStarted.AddListener(() => SetForwardMovement(false));
-            PlayerManager.Instance.OnDepositCompleted.AddListener(() => SetForwardMovement(true));     
+            PlayerManager.Instance.OnDepositCompleted.AddListener(() => SetForwardMovement(true));
+            LevelManager.Instance.OnLevelFailed.AddListener(DisableMovement);
+            PlayerManager.Instance.OnPlayerInitialized.AddListener(Initialize);                
             PlayerManager.Instance.OnReachedFinishLine.AddListener(MoveTowardsNextLevel);
         }
 
         private void OnDisable()
         {
             LevelManager.Instance.OnLevelStarted.RemoveListener(() => SetForwardMovement(true));
-            LevelManager.Instance.OnLevelFailed.RemoveListener(DisableMovement);
             PlayerManager.Instance.OnDepositStarted.RemoveListener(() => SetForwardMovement(false));
             PlayerManager.Instance.OnDepositCompleted.RemoveListener(() => SetForwardMovement(true));
+            LevelManager.Instance.OnLevelFailed.RemoveListener(DisableMovement);
+            PlayerManager.Instance.OnPlayerInitialized.RemoveListener(Initialize);
             PlayerManager.Instance.OnReachedFinishLine.RemoveListener(MoveTowardsNextLevel);
         }
 
         private void Initialize() 
         {
+            IsActive = true;
             SetForwardMovement(false);
             SetSwerve(true);
         }  
@@ -47,7 +50,12 @@ namespace Picker3D.Runtime
         private void MoveTowardsNextLevel() 
         {
             DisableMovement();
-
+            Vector3 targetPosition = LevelManager.Instance.LevelController.NextLevel.transform.position;
+            MovementTween(targetPosition, MOVEMENT_TWEEN_SPEED, MOVEMENT_TWEEN_EASE, () =>
+            {
+                Initialize();
+                PlayerManager.Instance.OnReachedStartPoint.Invoke();
+            });
         }
 
         private void DisableMovement() 

@@ -19,21 +19,31 @@ namespace Picker3D.Runtime
         private const Ease MOVEMENT_EASE = Ease.InOutBack;
         private const float MOVEMENT_DURATION = 1f;
 
+        private Vector3 _defaultLocalPosition;
         private Tween _movementTween;
 
         private void Awake()
         {
-            DepositArea.AddDepositorBlocker(this);
+            _defaultLocalPosition = body.localPosition;
         }
 
         private void OnEnable()
         {
             DepositArea.OnDepositCompleted.AddListener(PlaceTopCover);
+            DepositArea.OnInitialized.AddListener(Initialize);
         }
 
         private void OnDisable()
         {
             DepositArea.OnDepositCompleted.RemoveListener(PlaceTopCover);
+            DepositArea.OnInitialized.RemoveListener(Initialize);
+        }
+
+        private void Initialize() 
+        {
+            IsCompleted = false;
+            DepositArea.AddDepositorBlocker(this);
+            body.localPosition = _defaultLocalPosition;
         }
 
         private void PlaceTopCover() 

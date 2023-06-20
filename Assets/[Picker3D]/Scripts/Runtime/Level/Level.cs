@@ -12,25 +12,30 @@ namespace Picker3D.Runtime
     {
         private List<Platform> _platforms = null;
         private List<Platform> Platforms { get => _platforms == null ? _platforms = GetComponentsInChildren<Platform>().ToList() : _platforms; set => _platforms = value; }
-        public List<PoolObject> LevelItems { get; private set; } = new List<PoolObject>();
+        public List<PoolObject> LevelItems { get; private set; } = new List<PoolObject>();     
+        public LevelController LevelController { get; private set; }
         public LevelData LevelData { get; private set; }
         public UnityEvent OnInitialized { get; } = new UnityEvent();             
 
-        public void Initialize(LevelData levelData) 
+        public void Initialize(LevelData levelData, LevelController levelController) 
         {
             LevelData = levelData;
+            LevelController = levelController;
+
             CreateLevel();
             SortPlatforms();
+
             OnInitialized.Invoke();
         }
 
         public void DestroyLevel() 
         {
-            foreach (LevelItem levelItem in LevelItems)
+            LevelController.RemoveLevel(this);
+            foreach (PoolObject levelItem in LevelItems)
             {
                 PoolingManager.Instance.DestroyPoolObject(levelItem);
             }
-            Destroy(gameObject);
+            gameObject.SetActive(false);       
         }
 
         public Vector3 GetMaxPosition() 
