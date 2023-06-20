@@ -9,65 +9,68 @@ namespace Picker3D.Runtime
 {
     public class LevelController : MonoBehaviour
     {
-        public Level CurrentLevel { get; private set; }
-        public Level NextLevel { get; private set; }
-        private int CurrentLevelDataIndex => LevelManager.CurrentLevelDataIndex;
+        public Level CurrentLevel => Levels[0];
+        public Level NextLevel => Levels[1];
+        public List<Level> Levels { get; private set; } = new List<Level>();       
         private int CurrentLevelIndex => LevelManager.CurrentLevel;
         private List<LevelData> LevelDatas => LevelManager.Instance.Levels;
 
-        [SerializeField] private Transform levelParent;
-        
+        [SerializeField] private Transform levelContainer;
+
+        private const int START_LEVEL_COUNT = 3;
         private const string LEVEL_NAME_PREFIX = "LEVEL ";
 
         private void Awake()
         {
-            Initialize();   
+            InitializeLevels();   
         }
 
-        private void Initialize() 
+        private void InitializeLevels() 
         {
-            CreateCurrentLevel();
-            CreateNextLevel();
-        }
+            for (int i = 0; i < START_LEVEL_COUNT; i++)
+            {
+                CreateLevel(CurrentLevelIndex + i);
+            }
+        }       
 
-        private void CreateCurrentLevel() 
-        {           
-            LevelData levelData = GetLevelData(CurrentLevelDataIndex);
-            GameObject level = new GameObject(LEVEL_NAME_PREFIX + CurrentLevelIndex);
-            level.transform.SetParent(levelParent);
-
-            CurrentLevel = level.AddComponent<Level>();
-            CurrentLevel.Initialize(levelData);
-        }
-
-        private void CreateNextLevel() 
+        private void CreateLevel(int levelIndex) 
         {
-            LevelData levelData = GetLevelData(CurrentLevelDataIndex + 1);
-            GameObject level = new GameObject(LEVEL_NAME_PREFIX + (CurrentLevelIndex + 1));            
-            level.transform.SetParent(levelParent);
+            LevelData levelData = GetLevelData(levelIndex);
 
-            NextLevel = level.AddComponent<Level>();
-            NextLevel.Initialize(levelData);
+            GameObject levelParent = new GameObject(LEVEL_NAME_PREFIX + levelIndex);
+            levelParent.transform.SetParent(levelContainer);
 
-            float offet = (NextLevel.transform.position - NextLevel.GetMinPosition()).z;
-            Vector3 position = CurrentLevel.GetMaxPosition() + Vector3.forward * offet;
-            NextLevel.transform.position = position;
-        }
+            Level level = levelParent.AddComponent<Level>();
+            level.Initialize(levelData);
+            Levels.Add(level);           
 
-        private LevelData GetLevelData(int levelDataIndex) 
+            if (Levels.Count == 1)
+                return;
+
+            float offet = (level.transform.position - level.GetMinPosition()).z;           
+            Vector3 position = Levels[Levels.Count - 2].GetMaxPosition() + Vector3.forward * offet;
+            level.transform.position = position;
+        }        
+
+        private LevelData GetLevelData(int levelIndex) 
         {
             if (LevelDatas.Count == 1)
             {
                 return LevelDatas[0];
             }
 
-            if (levelDataIndex < LevelDatas.Count - 1)
+            if (levelIndex < LevelDatas.Count - 1)
             {
-                return LevelDatas[levelDataIndex];
+                return LevelDatas[levelIndex];
             }
 
             List<LevelData> levelDatas = new List<LevelData>(LevelDatas);
-            levelDatas.RemoveAt(CurrentLevelDataIndex);
+            if (Levels.Count > 0)
+            {
+                Level lastLevel = Levels[Levels.Count - 1];
+                int index = LevelDatas.IndexOf(lastLevel.LevelData);
+                levelDatas.RemoveAt(index);
+            }  
 
             Random.InitState(CurrentLevelIndex);
             levelDatas.Shuffle();

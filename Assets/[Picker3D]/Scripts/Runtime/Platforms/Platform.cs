@@ -8,18 +8,18 @@ namespace Picker3D.Runtime
     {
         [SerializeField] private MeshRenderer platformRenderer;
         [SerializeField] private List<MeshRenderer> borderRenderes;
-
+      
         public Vector3 GetMaxPosition() 
         {
             Vector3 position = transform.position;
-            position.z = platformRenderer.bounds.max.z;
+            position.z = platformRenderer.bounds.max.z;          
             return position;
         }
-
+        
         public Vector3 GetMinPosition()
         {
             Vector3 position = transform.position;
-            position.z = platformRenderer.bounds.min.z;
+            position.z = platformRenderer.bounds.min.z;           
             return position;
         }
 
