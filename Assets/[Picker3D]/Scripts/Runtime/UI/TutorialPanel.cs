@@ -11,12 +11,14 @@ namespace Picker3D.UI
         {
             base.OnEnable();
             LevelManager.Instance.OnLevelStarted.AddListener(HidePanel);
+            CurrencyManager.Instance.OnSuccessRewardClaimed.AddListener(ShowPanel);
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
             LevelManager.Instance.OnLevelStarted.RemoveListener(HidePanel);
+            CurrencyManager.Instance.OnSuccessRewardClaimed.RemoveListener(ShowPanel);
         }
     }
 }

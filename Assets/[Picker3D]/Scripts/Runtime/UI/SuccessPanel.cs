@@ -52,6 +52,7 @@ namespace Picker3D.UI
                 return;
 
             IsClaimed = true;
+            SetClaimButton(false);
             StartCoroutine(ClaimCoroutine());
         }
 
