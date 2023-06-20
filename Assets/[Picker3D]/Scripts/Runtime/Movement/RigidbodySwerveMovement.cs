@@ -40,6 +40,9 @@ namespace Picker3D.Movements
 
         protected virtual void CheckInput()
         {
+            if (!IsActive)
+                return;
+
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 IsFingerDown = true;
@@ -51,8 +54,7 @@ namespace Picker3D.Movements
             }
             else if (Input.GetMouseButtonUp(0))
             {
-                IsFingerDown = false;
-                ScreenDelta = Vector2.zero;
+                Release();
             }
         }
 
@@ -111,6 +113,12 @@ namespace Picker3D.Movements
             float border = MovementData.MovementWidth / 2f;
             position.x = Mathf.Clamp(position.x, -border, border);
             return position;
+        }
+
+        protected virtual void Release() 
+        {
+            IsFingerDown = false;
+            ScreenDelta = Vector2.zero;
         }
     }
 }

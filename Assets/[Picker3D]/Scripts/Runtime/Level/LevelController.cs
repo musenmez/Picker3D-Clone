@@ -47,8 +47,12 @@ namespace Picker3D.Runtime
         public void RestartLevel() 
         {
             LevelData currentLevelData = CurrentLevel.LevelData;
+            Vector3 currentLevelPosition = CurrentLevel.transform.position;
+
             CurrentLevel.DestroyLevel();
-            CreateLevel(CurrentLevelIndex, currentLevelData);
+
+            Level level = CreateLevel(CurrentLevelIndex, currentLevelData);
+            level.transform.position = currentLevelPosition;
         }
 
         public void UpdateLevel() 
@@ -66,7 +70,7 @@ namespace Picker3D.Runtime
             }
         }             
 
-        private void CreateLevel(int levelIndex, LevelData levelData = null) 
+        private Level CreateLevel(int levelIndex, LevelData levelData = null) 
         {
             levelData = levelData == null ? GetLevelData(levelIndex) : levelData;
 
@@ -85,6 +89,7 @@ namespace Picker3D.Runtime
             }
 
             AddLevel(level);
+            return level;
         }          
 
         private LevelData GetLevelData(int levelIndex) 

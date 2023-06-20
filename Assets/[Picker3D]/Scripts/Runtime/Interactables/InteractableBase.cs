@@ -8,7 +8,7 @@ namespace Picker3D.Runtime
 {
     public abstract class InteractableBase : MonoBehaviour, IInteractable
     {
-        public bool IsInteracted { get; private set; }
+        public bool IsInteracted { get; protected set; }
         public UnityEvent OnInteracted { get; } = new UnityEvent();
 
         public virtual void Interact(Player player)

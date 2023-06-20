@@ -17,11 +17,13 @@ namespace Picker3D.Runtime
         private void OnEnable()
         {
             LevelManager.Instance.OnLevelRestarted.AddListener(Initialize);
+            LevelManager.Instance.OnLevelUpdated.AddListener(Initialize);
         }
 
         private void OnDisable()
         {
             LevelManager.Instance.OnLevelRestarted.RemoveListener(Initialize);
+            LevelManager.Instance.OnLevelUpdated.RemoveListener(Initialize);
         }
 
         private void Initialize() 

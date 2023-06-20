@@ -52,8 +52,7 @@ namespace Picker3D.Runtime
             DisableMovement();
             Vector3 targetPosition = LevelManager.Instance.LevelController.NextLevel.transform.position;
             MovementTween(targetPosition, MOVEMENT_TWEEN_SPEED, MOVEMENT_TWEEN_EASE, () =>
-            {
-                Initialize();
+            {                
                 PlayerManager.Instance.OnReachedStartPoint.Invoke();
             });
         }
@@ -61,6 +60,7 @@ namespace Picker3D.Runtime
         private void DisableMovement() 
         {
             IsActive = false;
+            Release();
         }
 
         private void SetForwardMovement(bool isEnabled) 
