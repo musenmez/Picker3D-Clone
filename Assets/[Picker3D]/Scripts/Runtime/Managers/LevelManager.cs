@@ -21,19 +21,7 @@ namespace Picker3D.Managers
             {
                 PlayerPrefs.SetInt(PlayerPrefsKeys.CurrentLevel, value);
             }
-        }
-
-        public static int CurrentLevelDataIndex
-        {
-            get
-            {
-                return PlayerPrefs.GetInt(PlayerPrefsKeys.CurrentLevelDataIndex, 0);
-            }
-            private set
-            {
-                PlayerPrefs.SetInt(PlayerPrefsKeys.CurrentLevelDataIndex, value);
-            }
-        }
+        }        
 
         public List<LevelData> Levels => levels;
         public bool IsLevelStarted { get; private set; }      
@@ -50,16 +38,14 @@ namespace Picker3D.Managers
         {
             InputManager.Instance.OnTouched.AddListener(StartLevel);
             PlayerManager.Instance.OnDepositFailed.AddListener(FailLevel);
-            PlayerManager.Instance.OnReachedStartPoint.AddListener(ResetVariables);
-            PlayerManager.Instance.OnReachedFinishLine.AddListener(UpdateLevel);
+            PlayerManager.Instance.OnReachedStartPoint.AddListener(UpdateLevel);            
         }
 
         private void OnDisable()
         {
             InputManager.Instance.OnTouched.RemoveListener(StartLevel);
             PlayerManager.Instance.OnDepositFailed.RemoveListener(FailLevel);
-            PlayerManager.Instance.OnReachedStartPoint.RemoveListener(ResetVariables);
-            PlayerManager.Instance.OnReachedFinishLine.RemoveListener(UpdateLevel);
+            PlayerManager.Instance.OnReachedStartPoint.RemoveListener(UpdateLevel);            
         }        
 
         public void SetLevelController(LevelController levelController) 
@@ -69,7 +55,7 @@ namespace Picker3D.Managers
 
         public void RestartLevel() 
         {
-            ResetVariables();
+            ResetManager();
             LevelController.RestartLevel();
             OnLevelRestarted.Invoke();
         }
@@ -91,11 +77,13 @@ namespace Picker3D.Managers
         private void UpdateLevel() 
         {
             CurrentLevel++;
+            ResetManager();
+
             LevelController.UpdateLevel();
             OnLevelUpdated.Invoke();
         }
 
-        private void ResetVariables() 
+        private void ResetManager() 
         {
             IsLevelStarted = false;
         }

@@ -10,7 +10,7 @@ namespace Picker3D.Runtime
 {
     public class PlayerMovement : RigidbodySwerveMovement
     {
-        private const float MOVEMENT_TWEEN_SPEED = 20f;
+        private const float MOVEMENT_TWEEN_SPEED = 40f;
         private const Ease MOVEMENT_TWEEN_EASE = Ease.InOutSine;
 
         private Tween _movementTween;
@@ -26,7 +26,7 @@ namespace Picker3D.Runtime
             PlayerManager.Instance.OnDepositStarted.AddListener(() => SetForwardMovement(false));
             PlayerManager.Instance.OnDepositCompleted.AddListener(() => SetForwardMovement(true));
             LevelManager.Instance.OnLevelFailed.AddListener(DisableMovement);
-            PlayerManager.Instance.OnPlayerInitialized.AddListener(Initialize);                
+            PlayerManager.Instance.OnPlayerInitialized.AddListener(Initialize);
             PlayerManager.Instance.OnReachedFinishLine.AddListener(MoveTowardsNextLevel);
         }
 
