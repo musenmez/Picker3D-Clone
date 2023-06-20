@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Picker3D.CameraExtension 
+namespace Picker3D.CameraExtensions 
 {
     using UnityEngine;
     using Cinemachine;

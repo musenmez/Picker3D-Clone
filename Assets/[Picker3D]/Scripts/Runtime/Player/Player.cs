@@ -4,44 +4,33 @@ using UnityEngine;
 using UnityEngine.Events;
 using Picker3D.Managers;
 
-namespace Picker3D.PlayerSystem 
+namespace Picker3D.Runtime 
 {
     public class Player : MonoBehaviour
     {
-        public bool IsForwardMovementEnabled { get; private set; }
-        public bool IsSwerveEnabled { get; private set; }          
-
         private void Awake()
         {
-            PlayerManager.Instance.SetPlayer(this);
+            PlayerManager.Instance.SetPlayer(this);    
             Initialize();
         }
 
         private void OnEnable()
         {
-            PlayerManager.Instance.OnDepositStarted.AddListener(StartDeposit);
-            PlayerManager.Instance.OnDepositCompleted.AddListener(CompleteDeposit);
+            LevelManager.Instance.OnLevelRestarted.AddListener(Initialize);
+            LevelManager.Instance.OnLevelUpdated.AddListener(Initialize);
         }
 
         private void OnDisable()
         {
-            PlayerManager.Instance.OnDepositStarted.RemoveListener(StartDeposit);
-            PlayerManager.Instance.OnDepositCompleted.RemoveListener(CompleteDeposit);
-        }        
+            LevelManager.Instance.OnLevelRestarted.RemoveListener(Initialize);
+            LevelManager.Instance.OnLevelUpdated.RemoveListener(Initialize);
+        }
 
         private void Initialize() 
         {
-            IsForwardMovementEnabled = false;
-        }
-
-        private void StartDeposit() 
-        {
-            IsForwardMovementEnabled = false;
-        }
-
-        private void CompleteDeposit() 
-        {
-            IsForwardMovementEnabled = true;
+            Vector3 initialPosition = LevelManager.Instance.LevelController.CurrentLevel.transform.position;
+            transform.position = initialPosition;
+            PlayerManager.Instance.OnPlayerInitialized.Invoke();
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-namespace Picker3D.DepositAreaSystem 
+namespace Picker3D.Runtime
 {
     public class DepositAreaText : MonoBehaviour
     {
@@ -20,11 +20,13 @@ namespace Picker3D.DepositAreaSystem
         private void OnEnable()
         {
             DepositArea.OnCollectableAmountChanged.AddListener(UpdateText);
+            DepositArea.OnInitialized.AddListener(UpdateText);
         }
 
         private void OnDisable() 
         {
             DepositArea.OnCollectableAmountChanged.RemoveListener(UpdateText);
+            DepositArea.OnInitialized.RemoveListener(UpdateText);
         }
 
         private void UpdateText() 

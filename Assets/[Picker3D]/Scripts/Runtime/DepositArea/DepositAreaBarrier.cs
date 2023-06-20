@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Picker3D.DepositAreaSystem 
+namespace Picker3D.Runtime
 {
     public class DepositAreaBarrier : MonoBehaviour, IDepositorBlocker
     {
@@ -28,19 +28,31 @@ namespace Picker3D.DepositAreaSystem
         private const float BARRIER_DELAY = 0.5f;
         private const Ease BARRIER_EASE = Ease.Linear;
 
+        private Quaternion _leftBarrierDefaultRotation;
+        private Quaternion _rightBarrierDefaultRotation;
+
         private void Awake()
         {
-            DepositArea.AddDepositorBlocker(this);
+            _leftBarrierDefaultRotation = leftBarrier.rotation;
+            _rightBarrierDefaultRotation = rightBarrier.rotation;
         }
 
         private void OnEnable()
         {
             TopCover.OnTopCoverPlaced.AddListener(OpenBarriers);
+            DepositArea.OnInitialized.AddListener(Initialize);
         }
 
         private void OnDisable()
         {
             TopCover.OnTopCoverPlaced.RemoveListener(OpenBarriers);
+            DepositArea.OnInitialized.RemoveListener(Initialize);
+        }
+        private void Initialize()
+        {
+            DepositArea.AddDepositorBlocker(this);
+            leftBarrier.rotation = _leftBarrierDefaultRotation;
+            rightBarrier.rotation = _rightBarrierDefaultRotation;
         }
 
         private void OpenBarriers() 

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Picker3D.Movement 
+namespace Picker3D.Movements 
 {
     public class RigidbodySwerveMovement : MonoBehaviour
     {
@@ -18,13 +18,15 @@ namespace Picker3D.Movement
         public MovementData MovementData => movementData;
         public Vector2 FingerPosition { get; protected set; }
         public Vector2 ScreenDelta { get; protected set; }
-        public bool IsFingerDown { get; private set; }
+        public bool IsFingerDown { get; protected set; }
+        public bool IsActive { get; protected set; } = true;
         public virtual bool IsSwerveEnabled { get; protected set; }
         public virtual bool IsForwardMovementEnabled { get; protected set; }
 
         [SerializeField] private MovementData movementData;
 
-        protected const float MAX_SCREEN_DELTA = 100f;
+        protected const float MIN_SWERVE_AMOUNT = -0.5f;
+        protected const float MAX_SWERVE_AMOUNT = 0.5f;
 
         protected virtual void Update()
         {
@@ -38,6 +40,9 @@ namespace Picker3D.Movement
 
         protected virtual void CheckInput()
         {
+            if (!IsActive)
+                return;
+
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 IsFingerDown = true;
@@ -49,13 +54,15 @@ namespace Picker3D.Movement
             }
             else if (Input.GetMouseButtonUp(0))
             {
-                IsFingerDown = false;
-                ScreenDelta = Vector2.zero;
+                Release();
             }
         }
 
         protected virtual void Movement()
         {
+            if (!IsActive)
+                return;
+
             Vector3 targetPosition = Rigidbody.position;
 
             targetPosition += GetForwardAmount();
@@ -88,29 +95,30 @@ namespace Picker3D.Movement
 
             // Convert back to world space
             Vector3 targetPosition = MainCamera.ScreenToWorldPoint(screenPoint);
+
             Vector3 swerveAmount = Vector3.Scale(targetPosition - Rigidbody.position, Vector3.right);
+            swerveAmount.x = Mathf.Clamp(swerveAmount.x, MIN_SWERVE_AMOUNT, MAX_SWERVE_AMOUNT);
 
             return swerveAmount;
         }
 
         protected virtual Vector2 GetScreenDelta()
         {
-            Vector2 delta = IsFingerDown ? (Vector2)Input.mousePosition - FingerPosition : Vector2.zero;
-            delta = ClampScreenDelta(delta);
+            Vector2 delta = IsFingerDown ? (Vector2)Input.mousePosition - FingerPosition : Vector2.zero;         
             return delta;
-        }
-
-        protected virtual Vector2 ClampScreenDelta(Vector2 screenDelta)
-        {
-            screenDelta.x = Mathf.Clamp(screenDelta.x, -MAX_SCREEN_DELTA / 2f, MAX_SCREEN_DELTA / 2f);
-            return screenDelta;
-        }
+        }        
 
         protected virtual Vector3 ClampPosition(Vector3 position)
         {
             float border = MovementData.MovementWidth / 2f;
             position.x = Mathf.Clamp(position.x, -border, border);
             return position;
+        }
+
+        protected virtual void Release() 
+        {
+            IsFingerDown = false;
+            ScreenDelta = Vector2.zero;
         }
     }
 }

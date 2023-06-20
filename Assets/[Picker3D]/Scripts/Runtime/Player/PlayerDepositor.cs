@@ -4,11 +4,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Picker3D.PlayerSystem 
+namespace Picker3D.Runtime
 {
     public class PlayerDepositor : MonoBehaviour, IDepositor
     {
-        public bool IsAvailable { get; private set; } = true;        
+        public bool IsAvailable { get; private set; } = true;
+
+        private void OnEnable()
+        {
+            PlayerManager.Instance.OnPlayerInitialized.AddListener(Initialize);
+        }
+
+        private void OnDisable()
+        {
+            PlayerManager.Instance.OnPlayerInitialized.RemoveListener(Initialize);
+        }
+
+        private void Initialize() 
+        {
+            IsAvailable = true;
+        }
 
         private void OnTriggerEnter(Collider other)
         {

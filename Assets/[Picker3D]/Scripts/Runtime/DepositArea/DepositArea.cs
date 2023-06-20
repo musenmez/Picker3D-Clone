@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Picker3D.DepositAreaSystem 
+namespace Picker3D.Runtime 
 {
     public class DepositArea : MonoBehaviour, IDepositArea
     {
@@ -14,11 +14,11 @@ namespace Picker3D.DepositAreaSystem
         public int RequiredCollectable { get{ return requiredCollectable; } set { requiredCollectable = value; } }
         public int CurrentCollectableAmount { get; private set; }
         public List<IDepositorBlocker> DepositorBlockers { get; private set; } = new List<IDepositorBlocker>();
-        public UnityEvent OnInitialized { get; private set; } = new UnityEvent();
-        public UnityEvent OnDepositStarted { get; private set; } = new UnityEvent();
-        public UnityEvent OnDepositCompleted { get; private set; } = new UnityEvent();
-        public UnityEvent OnDepositFailed { get; private set; } = new UnityEvent();
-        public UnityEvent OnCollectableAmountChanged { get; private set; } = new UnityEvent();        
+        public UnityEvent OnInitialized { get; } = new UnityEvent();
+        public UnityEvent OnDepositStarted { get; } = new UnityEvent();
+        public UnityEvent OnDepositCompleted { get; } = new UnityEvent();
+        public UnityEvent OnDepositFailed { get; } = new UnityEvent();
+        public UnityEvent OnCollectableAmountChanged { get; } = new UnityEvent();        
 
         public const float DEPOSIT_DURATION = 2.5f;
 
@@ -30,6 +30,13 @@ namespace Picker3D.DepositAreaSystem
         public void Initialize(int requiredCollectable) 
         {
             RequiredCollectable = requiredCollectable;
+
+            IsAreaChecked = false;
+            IsCompleted = false;
+
+            CurrentCollectableAmount = 0;
+            DepositorBlockers.Clear();
+
             OnInitialized.Invoke();
         }
 

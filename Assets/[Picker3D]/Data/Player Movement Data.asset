@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Player Movement Data
   m_EditorClassIdentifier: 
   MovementSpeed: 15
-  MovementWidth: 10
-  Sensitivity: 1
+  MovementWidth: 7
+  Sensitivity: 1.25

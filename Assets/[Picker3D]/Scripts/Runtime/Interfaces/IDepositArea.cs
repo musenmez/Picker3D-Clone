@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 namespace Picker3D.Interfaces 
-{
+{   
     public interface IDepositArea 
     {
         bool IsCompleted { get; }       
