@@ -7,18 +7,19 @@ namespace Picker3D.UI
 {
     public class FailPanel : PanelBase
     {
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             LevelManager.Instance.OnLevelFailed.AddListener(ShowPanel);
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
             LevelManager.Instance.OnLevelFailed.RemoveListener(ShowPanel);
         }
-
-        //Button Action
-        public void Restart() 
+       
+        public void RestartButton() 
         {
             HidePanel();
             LevelManager.Instance.RestartLevel();

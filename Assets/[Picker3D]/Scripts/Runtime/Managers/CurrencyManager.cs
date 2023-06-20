@@ -1,4 +1,5 @@
-﻿using Picker3D.Utilities;
+﻿using Picker3D.UI;
+using Picker3D.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,12 +21,18 @@ namespace Picker3D.Managers
             }
         }
 
+        public CurrencyPanel CurrencyPanel { get; private set; }
         public UnityEvent OnCurrencyAmountChanged { get; } = new UnityEvent();
 
         public void AddCurrency(int amount) 
         {
             CurrenyAmount += amount;
             OnCurrencyAmountChanged.Invoke();
+        }
+
+        public void SetCurrencyPanel(CurrencyPanel currencyPanel) 
+        {
+            CurrencyPanel = currencyPanel;
         }
     }
 }

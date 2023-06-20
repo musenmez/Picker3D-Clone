@@ -38,12 +38,12 @@ namespace Picker3D.UI
 
         private Tween _alphaTween;
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             UIManager.Instance.AddPanel(this);
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             UIManager.Instance.RemovePanel(this);
         }       
