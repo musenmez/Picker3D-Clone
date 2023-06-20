@@ -6,6 +6,7 @@ namespace Picker3D.Utilities
 {
     public static class PlayerPrefsKeys
     {
-        public static string CurrentLevel = nameof(CurrentLevel);        
+        public static string CurrentLevel = nameof(CurrentLevel);
+        public static string CurrencyAmount = nameof(CurrencyAmount);
     }
 }

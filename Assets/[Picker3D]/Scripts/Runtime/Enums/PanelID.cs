@@ -8,7 +8,8 @@ namespace Picker3D.Enums
     {
         None = 0,
         FailPanel = 10,
-        SuccessPanel = 20
+        SuccessPanel = 20,
+        CurrencyPanel = 30
     }
 }
 
