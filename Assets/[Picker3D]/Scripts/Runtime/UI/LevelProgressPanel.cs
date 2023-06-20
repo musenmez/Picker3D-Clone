@@ -31,16 +31,18 @@ namespace Picker3D.UI
         protected override void OnEnable()
         {
             base.OnEnable();
-            LevelManager.Instance.OnLevelUpdated.AddListener(Initialize);
-            LevelManager.Instance.OnLevelRestarted.AddListener(Initialize);
+            LevelManager.Instance.OnLevelCompleted.AddListener(HidePanel);
+            LevelManager.Instance.OnLevelStarted.AddListener(OnLevelStarted);
+            LevelManager.Instance.OnLevelFailed.AddListener(HidePanel);
             PlayerManager.Instance.OnDepositCompleted.AddListener(FillSegment);
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
-            LevelManager.Instance.OnLevelUpdated.RemoveListener(Initialize);
-            LevelManager.Instance.OnLevelRestarted.RemoveListener(Initialize);
+            LevelManager.Instance.OnLevelCompleted.RemoveListener(HidePanel);
+            LevelManager.Instance.OnLevelStarted.RemoveListener(OnLevelStarted);            
+            LevelManager.Instance.OnLevelFailed.RemoveListener(HidePanel);
             PlayerManager.Instance.OnDepositCompleted.RemoveListener(FillSegment);
         }
 
@@ -51,6 +53,12 @@ namespace Picker3D.UI
             DestroySegments();
             CreateSegments();
             SortSegments();
+        }
+
+        private void OnLevelStarted() 
+        {
+            Initialize();
+            ShowPanel();
         }
 
         private void CreateSegments() 

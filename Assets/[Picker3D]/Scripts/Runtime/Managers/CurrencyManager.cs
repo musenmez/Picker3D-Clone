@@ -22,7 +22,7 @@ namespace Picker3D.Managers
         }
 
         public CurrencyPanel CurrencyPanel { get; private set; }
-        public UnityEvent OnCurrencyAmountChanged { get; } = new UnityEvent();
+        public UnityEvent OnCurrencyAmountChanged { get; } = new UnityEvent();        
 
         public void AddCurrency(int amount) 
         {

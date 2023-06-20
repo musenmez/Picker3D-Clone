@@ -55,7 +55,7 @@ namespace Picker3D.Runtime
             level.transform.position = currentLevelPosition;
         }
 
-        public void UpdateLevel() 
+        public void CompleteLevel() 
         {
             CurrentLevel.DestroyLevel();
             int levelIndex = CurrentLevelIndex + Levels.Count;

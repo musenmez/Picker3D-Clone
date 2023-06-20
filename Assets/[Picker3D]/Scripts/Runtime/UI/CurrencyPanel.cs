@@ -43,12 +43,16 @@ namespace Picker3D.UI
         protected override void OnEnable()
         {
             base.OnEnable();
+            LevelManager.Instance.OnLevelStarted.AddListener(ShowPanel);
+            LevelManager.Instance.OnLevelFailed.AddListener(HidePanel);
             CurrencyManager.Instance.OnCurrencyAmountChanged.AddListener(UpdateCurrencyText);
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
+            LevelManager.Instance.OnLevelStarted.RemoveListener(ShowPanel);
+            LevelManager.Instance.OnLevelFailed.RemoveListener(HidePanel);
             CurrencyManager.Instance.OnCurrencyAmountChanged.RemoveListener(UpdateCurrencyText);
         }
 
