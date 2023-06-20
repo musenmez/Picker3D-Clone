@@ -31,18 +31,20 @@ namespace Picker3D.UI
         protected override void OnEnable()
         {
             base.OnEnable();
-            LevelManager.Instance.OnLevelCompleted.AddListener(HidePanel);
-            LevelManager.Instance.OnLevelStarted.AddListener(OnLevelStarted);
+            LevelManager.Instance.OnLevelCompleted.AddListener(OnLevelCompleted);
+            LevelManager.Instance.OnLevelStarted.AddListener(ShowPanel);
             LevelManager.Instance.OnLevelFailed.AddListener(HidePanel);
+            CurrencyManager.Instance.OnSuccessRewardClaimed.AddListener(ShowPanel);
             PlayerManager.Instance.OnDepositCompleted.AddListener(FillSegment);
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
-            LevelManager.Instance.OnLevelCompleted.RemoveListener(HidePanel);
-            LevelManager.Instance.OnLevelStarted.RemoveListener(OnLevelStarted);            
+            LevelManager.Instance.OnLevelCompleted.RemoveListener(OnLevelCompleted);
+            LevelManager.Instance.OnLevelStarted.RemoveListener(ShowPanel);            
             LevelManager.Instance.OnLevelFailed.RemoveListener(HidePanel);
+            CurrencyManager.Instance.OnSuccessRewardClaimed.RemoveListener(ShowPanel);
             PlayerManager.Instance.OnDepositCompleted.RemoveListener(FillSegment);
         }
 
@@ -55,10 +57,10 @@ namespace Picker3D.UI
             SortSegments();
         }
 
-        private void OnLevelStarted() 
+        private void OnLevelCompleted() 
         {
             Initialize();
-            ShowPanel();
+            HidePanel();
         }
 
         private void CreateSegments() 
@@ -100,7 +102,7 @@ namespace Picker3D.UI
                 PoolingManager.Instance.DestroyPoolObject(progressSegment);
             }
             ProgressSegments.Clear();
-        }
+        }        
     }
 }
 

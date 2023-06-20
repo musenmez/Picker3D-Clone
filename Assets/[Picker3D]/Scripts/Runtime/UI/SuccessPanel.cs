@@ -36,12 +36,14 @@ namespace Picker3D.UI
         {
             base.OnEnable();
             LevelManager.Instance.OnLevelCompleted.AddListener(ShowPanel);
+            CurrencyManager.Instance.OnSuccessRewardClaimed.AddListener(HidePanel);
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
             LevelManager.Instance.OnLevelCompleted.RemoveListener(ShowPanel);
+            CurrencyManager.Instance.OnSuccessRewardClaimed.RemoveListener(HidePanel);
         }
 
         public void ClaimButton()
@@ -87,8 +89,8 @@ namespace Picker3D.UI
 
         private void CompleteClaim() 
         {
-            CurrencyPanel.HidePanel();
-            HidePanel();            
+            HidePanel();
+            CurrencyManager.Instance.OnSuccessRewardClaimed.Invoke();
         }
 
         private void DecreaseReward(int amount) 

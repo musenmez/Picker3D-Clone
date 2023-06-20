@@ -10,7 +10,8 @@ namespace Picker3D.Enums
         FailPanel = 10,
         SuccessPanel = 20,
         CurrencyPanel = 30,
-        LevelProgressPanel = 40        
+        LevelProgressPanel = 40,
+        TutorialPanel = 50
     }
 }
 
