@@ -29,7 +29,7 @@ namespace Picker3D.Managers
         public UnityEvent OnLevelStarted { get; } = new UnityEvent();
         public UnityEvent OnLevelFailed{ get; } = new UnityEvent();
         public UnityEvent OnLevelRestarted { get; } = new UnityEvent();
-        public UnityEvent OnLevelUpdated { get; } = new UnityEvent();
+        public UnityEvent OnLevelCompleted { get; } = new UnityEvent();
 
         [ReorderableList]
         [SerializeField] private List<LevelData> levels = new List<LevelData>();
@@ -38,14 +38,14 @@ namespace Picker3D.Managers
         {
             InputManager.Instance.OnTouched.AddListener(StartLevel);
             PlayerManager.Instance.OnDepositFailed.AddListener(FailLevel);
-            PlayerManager.Instance.OnReachedStartPoint.AddListener(UpdateLevel);            
+            PlayerManager.Instance.OnReachedStartPoint.AddListener(CompleteLevel);            
         }
 
         private void OnDisable()
         {
             InputManager.Instance.OnTouched.RemoveListener(StartLevel);
             PlayerManager.Instance.OnDepositFailed.RemoveListener(FailLevel);
-            PlayerManager.Instance.OnReachedStartPoint.RemoveListener(UpdateLevel);            
+            PlayerManager.Instance.OnReachedStartPoint.RemoveListener(CompleteLevel);            
         }        
 
         public void SetLevelController(LevelController levelController) 
@@ -74,13 +74,13 @@ namespace Picker3D.Managers
             OnLevelFailed.Invoke();
         }
 
-        private void UpdateLevel() 
+        private void CompleteLevel() 
         {
             CurrentLevel++;
             ResetManager();
 
-            LevelController.UpdateLevel();
-            OnLevelUpdated.Invoke();
+            LevelController.CompleteLevel();
+            OnLevelCompleted.Invoke();
         }
 
         private void ResetManager() 

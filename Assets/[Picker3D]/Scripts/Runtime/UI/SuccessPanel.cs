@@ -35,13 +35,15 @@ namespace Picker3D.UI
         protected override void OnEnable()
         {
             base.OnEnable();
-            LevelManager.Instance.OnLevelUpdated.AddListener(ShowPanel);
+            LevelManager.Instance.OnLevelCompleted.AddListener(ShowPanel);
+            CurrencyManager.Instance.OnSuccessRewardClaimed.AddListener(HidePanel);
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
-            LevelManager.Instance.OnLevelUpdated.RemoveListener(ShowPanel);
+            LevelManager.Instance.OnLevelCompleted.RemoveListener(ShowPanel);
+            CurrencyManager.Instance.OnSuccessRewardClaimed.RemoveListener(HidePanel);
         }
 
         public void ClaimButton()
@@ -50,6 +52,7 @@ namespace Picker3D.UI
                 return;
 
             IsClaimed = true;
+            SetClaimButton(false);
             StartCoroutine(ClaimCoroutine());
         }
 
@@ -75,7 +78,7 @@ namespace Picker3D.UI
 
             for (int i = 0; i < GEM_SPAWN_AMOUNT; i++)
             {
-                completeAction = i == (GEM_SPAWN_AMOUNT - 1) ? HidePanel : completeAction;
+                completeAction = i == (GEM_SPAWN_AMOUNT - 1) ? CompleteClaim : completeAction;
                 CurrencyPanel.CreateGem(gemIcon.position, currencyAmountPerGem, completeAction);
                 DecreaseReward(currencyAmountPerGem);
                 yield return SpawnDelay;
@@ -83,6 +86,12 @@ namespace Picker3D.UI
 
             CurrencyManager.Instance.AddCurrency(remainder);
             DecreaseReward(remainder);           
+        }
+
+        private void CompleteClaim() 
+        {
+            HidePanel();
+            CurrencyManager.Instance.OnSuccessRewardClaimed.Invoke();
         }
 
         private void DecreaseReward(int amount) 
