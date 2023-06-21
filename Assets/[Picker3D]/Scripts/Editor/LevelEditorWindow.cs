@@ -9,6 +9,9 @@ namespace Picker3D.EditorSystem
     public class LevelEditorWindow : EditorWindow
     {
         private Stack<LevelEditorActionType> EditorActions { get; set; } = new Stack<LevelEditorActionType>();
+        private List<DepositArea> DepositAreaPrefabs { get; set; } = new List<DepositArea>();
+        private List<string> DepositAreaPrefabNames { get; set; } = new List<string>();
+        private List<DepositArea> SpawnedDepositAreas { get; set; } = new List<DepositArea>();
         private List<Platform> PlatformPrefabs { get; set; } = new List<Platform>();
         private List<string> PlatformPrefabNames { get; set; } = new List<string>();
         private List<Platform> SpawnedPlaforms { get; set; } = new List<Platform>();
@@ -19,12 +22,18 @@ namespace Picker3D.EditorSystem
         private const float WINDOW_WIDTH = 400f;
         private const float WINDOW_HEIGHT = 600f;
 
+        private const int MAX_REQUIRED_COLLECTABLE = 100;
+
         private const string PLATFORM_PREFAB_PATH = "Assets/[Picker3D]/Prefabs/Platforms";
+        private const string DEPOSIT_AREA_PREFAB_PATH = "Assets/[Picker3D]/Prefabs/DepositAreas";
 
         private const string OFFSET_INFO = "Spawn position OFFSET necessary for the level start camera view. Without OFFSET level CANNOT look seemles.";
 
         private int _platformPrefabIndex;
         private Vector3 _platformSpawnPosition;
+
+        private int _depositAreaPrefabIndex;
+        private int _requiredCollectable;
 
         private Texture2D _sectionTexture;
 
@@ -58,15 +67,17 @@ namespace Picker3D.EditorSystem
         private void OnGUI()
         {
             DrawLayouts();
+            DrawHandlers();
             DrawPlatformSection();
             DrawDepositAreaSection();
             DrawButtomSection();
-        }        
+        }           
 
         private void Initialize() 
         {
             SetDefaultValues();
             SetPlatformPrefabs();
+            SetDepositAreaPrefabs();
             CreateSectionTexture();
             CreateLevelStructure();
         }
@@ -106,6 +117,11 @@ namespace Picker3D.EditorSystem
             _collectablesParent.transform.SetParent(_levelParent.transform);
         }
 
+        private void DrawHandlers() 
+        {
+            
+        }
+
         private void DrawLayouts() 
         {
             SetPlatformSection();
@@ -123,9 +139,7 @@ namespace Picker3D.EditorSystem
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.Label("Platform Prefab");
-            _platformPrefabIndex = EditorGUILayout.Popup( _platformPrefabIndex, PlatformPrefabNames.ToArray());
-
-            //_platformPrefab = (Platform)EditorGUILayout.ObjectField(_platformPrefab, typeof(Platform), false);
+            _platformPrefabIndex = EditorGUILayout.Popup( _platformPrefabIndex, PlatformPrefabNames.ToArray());           
             GUILayout.EndHorizontal();
 
             GUILayout.Space(10);
@@ -156,6 +170,28 @@ namespace Picker3D.EditorSystem
             EditorActions.Push(LevelEditorActionType.PlatformCreation);
         }
 
+        private void CreateDepositArea()
+        {
+            Platform lastPlatform = GetLastSpawnedPlatform();
+            Vector3 spawnPosition = lastPlatform == null ? PlatformDefaultSpawnPosition : lastPlatform.GetMaxPosition();
+
+            DepositArea prefab = GetDepositAreaPrefab();
+            if (prefab == null)
+            {
+                //TODO: Error message
+                return;
+            }
+            DepositArea spawnedDepositArea = (DepositArea)PrefabUtility.InstantiatePrefab(prefab);
+            spawnedDepositArea.transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
+            spawnedDepositArea.transform.SetParent(_platformParent.transform);
+            spawnedDepositArea.Initialize(_requiredCollectable);
+
+            SpawnedPlaforms.Add(spawnedDepositArea);
+            SpawnedDepositAreas.Add(spawnedDepositArea);
+
+            EditorActions.Push(LevelEditorActionType.DepositAreaCreation);
+        }       
+
         private Platform GetLastSpawnedPlatform() 
         {
             List<Platform> platforms = new List<Platform>(SpawnedPlaforms);
@@ -171,6 +207,21 @@ namespace Picker3D.EditorSystem
             return null;
         }
 
+        private DepositArea GetLastSpawnedDepositArea()
+        {
+            List<DepositArea> depositAreas = new List<DepositArea>(SpawnedDepositAreas);
+            for (int i = depositAreas.Count - 1; i >= 0; i--)
+            {
+                if (depositAreas[i] == null)
+                {
+                    SpawnedDepositAreas.RemoveAt(i);
+                    continue;
+                }
+                return depositAreas[i];
+            }
+            return null;
+        }
+
         private Platform GetPlatformPrefab() 
         {
             if (_platformPrefabIndex >= PlatformPrefabs.Count)
@@ -179,9 +230,35 @@ namespace Picker3D.EditorSystem
             return PlatformPrefabs[_platformPrefabIndex];
         }
 
+        private DepositArea GetDepositAreaPrefab() 
+        {
+            if (_depositAreaPrefabIndex >= DepositAreaPrefabs.Count)
+                return null;
+
+            return DepositAreaPrefabs[_depositAreaPrefabIndex];
+        }
+
         private void DrawDepositAreaSection()
         {
             GUILayout.BeginArea(_depositAreaSection);
+
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Required Collectable");
+            _requiredCollectable = EditorGUILayout.IntSlider(_requiredCollectable, 0, MAX_REQUIRED_COLLECTABLE);
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Deposit Area Prefab");
+            _depositAreaPrefabIndex = EditorGUILayout.Popup(_depositAreaPrefabIndex, DepositAreaPrefabNames.ToArray());
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+            if (GUILayout.Button("Create Deposit Area", GUILayout.Height(30)))
+            {
+                CreateDepositArea();
+            }
 
             GUILayout.EndArea();
         }
@@ -215,6 +292,7 @@ namespace Picker3D.EditorSystem
                     break;
 
                 case LevelEditorActionType.DepositAreaCreation:
+                    UndoDepositArea();
                     break;
 
                 default:
@@ -232,6 +310,16 @@ namespace Picker3D.EditorSystem
             DestroyImmediate(lastPlatform.gameObject);
         }
 
+        private void UndoDepositArea()
+        {
+            DepositArea depositArea = GetLastSpawnedDepositArea();
+            if (depositArea == null)
+                return;
+
+            SpawnedDepositAreas.Remove(depositArea);
+            DestroyImmediate(depositArea.gameObject);
+        }
+
         private void SetPlatformSection() 
         {
             _platformSection.x = 0;
@@ -245,7 +333,7 @@ namespace Picker3D.EditorSystem
             _depositAreaSection.x = 0;
             _depositAreaSection.y = Screen.height / 3f;
             _depositAreaSection.width = Screen.width;
-            _depositAreaSection.height = Screen.height / 3f;
+            _depositAreaSection.height = Screen.height / 3f;           
             GUI.DrawTexture(_depositAreaSection, _sectionTexture);
         }
 
@@ -268,6 +356,19 @@ namespace Picker3D.EditorSystem
                 PlatformPrefabs.Add(platform);
                 PlatformPrefabNames.Add(platform.name);
             } 
+        }
+
+        private void SetDepositAreaPrefabs()
+        {
+            string[] guids = AssetDatabase.FindAssets("t:Prefab", new string[] { DEPOSIT_AREA_PREFAB_PATH });
+
+            foreach (string guid in guids)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                DepositArea depositArea = AssetDatabase.LoadAssetAtPath<GameObject>(path).GetComponent<DepositArea>();
+                DepositAreaPrefabs.Add(depositArea);
+                DepositAreaPrefabNames.Add(depositArea.name);
+            }
         }
 
         private void Dispose() 

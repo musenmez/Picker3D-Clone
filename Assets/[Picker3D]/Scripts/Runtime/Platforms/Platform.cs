@@ -6,24 +6,24 @@ namespace Picker3D.Runtime
 {
     public class Platform : MonoBehaviour
     {
-        [SerializeField] private MeshRenderer platformRenderer;
-        [SerializeField] private List<MeshRenderer> borderRenderes;
+        [SerializeField] protected MeshRenderer platformRenderer;
+        [SerializeField] protected List<MeshRenderer> borderRenderes;
       
-        public Vector3 GetMaxPosition() 
+        public virtual Vector3 GetMaxPosition() 
         {
             Vector3 position = transform.position;
             position.z = platformRenderer.bounds.max.z;          
             return position;
         }
         
-        public Vector3 GetMinPosition()
+        public virtual Vector3 GetMinPosition()
         {
             Vector3 position = transform.position;
             position.z = platformRenderer.bounds.min.z;           
             return position;
         }
 
-        public void SetMaterials(Material groundMaterial, Material borderMaterial) 
+        public virtual void SetMaterials(Material groundMaterial, Material borderMaterial) 
         {
             platformRenderer.material = groundMaterial;
             foreach (MeshRenderer borderRenderer in borderRenderes)
