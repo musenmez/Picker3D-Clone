@@ -15,6 +15,7 @@ namespace Picker3D.Enums
         TinySphereCollectable = 40,        
         GemIcon = 50,
         ProgressSegment = 60,        
+        CollectParticle = 70
     }
 }
 
