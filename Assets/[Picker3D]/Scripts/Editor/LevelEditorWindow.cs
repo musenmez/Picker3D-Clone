@@ -117,7 +117,9 @@ namespace Picker3D.EditorSystem
             PlatformPrefabs.Clear();
             PlatformPrefabNames.Clear();
             CurrentLevelData = null;
-            _platformPrefabIndex = 0;    
+            _platformPrefabIndex = 0; 
+            _depositAreaPrefabIndex = 0;
+            _previewLevelDataIndex = 0;
         }
 
         static void CreateLevelStructure() 
