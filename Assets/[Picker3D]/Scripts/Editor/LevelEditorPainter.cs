@@ -23,13 +23,13 @@ namespace Picker3D.EditorSystem
             SceneView.duringSceneGui -= OnSceneGUI;
             SceneView.duringSceneGui += OnSceneGUI;
 
-            LevelEditorWindow.OnClosed.RemoveListener(Initialize);
-            LevelEditorWindow.OnClosed.AddListener(Initialize);
+            LevelEditorWindow.OnOpened.RemoveListener(Initialize);
+            LevelEditorWindow.OnOpened.AddListener(Initialize);
         }
 
         private void OnDestroy()
         {
-            LevelEditorWindow.OnClosed.RemoveListener(Initialize);
+            LevelEditorWindow.OnOpened.RemoveListener(Initialize);
         }
 
         static void OnSceneGUI(SceneView sceneView)
