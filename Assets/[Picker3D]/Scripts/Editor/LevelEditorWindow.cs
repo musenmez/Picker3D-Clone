@@ -11,6 +11,7 @@ namespace Picker3D.EditorSystem
 {  
     public class LevelEditorWindow : EditorWindow
     {
+        public static Stack<LevelEditorActionType> EditorActions { get; set; } = new Stack<LevelEditorActionType>();
         public static GameObject LevelParent { get; private set; }
         public static GameObject PlatformParent { get; private set; }
         public static GameObject DepositAreaParent { get; private set; }
@@ -21,8 +22,7 @@ namespace Picker3D.EditorSystem
         public static UnityEvent OnClosed { get; } = new UnityEvent();
 
         public static List<Platform> SpawnedPlaforms { get; set; } = new List<Platform>();
-        public static List<DepositArea> SpawnedDepositAreas { get; set; } = new List<DepositArea>();
-        static Stack<LevelEditorActionType> EditorActions { get; set; } = new Stack<LevelEditorActionType>();
+        public static List<DepositArea> SpawnedDepositAreas { get; set; } = new List<DepositArea>();        
         static List<DepositArea> DepositAreaPrefabs { get; set; } = new List<DepositArea>();
         static List<string> DepositAreaPrefabNames { get; set; } = new List<string>();
         static List<string> LevelDataNames { get; set; } = new List<string>();

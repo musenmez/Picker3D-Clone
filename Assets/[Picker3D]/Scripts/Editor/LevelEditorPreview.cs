@@ -5,6 +5,7 @@ using Picker3D.Models;
 using Picker3D.Runtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -41,7 +42,7 @@ namespace Picker3D.EditorSystem
                 else
                 {
                     levelItem.transform.SetParent(LevelEditorWindow.CollectablesParent.transform);                   
-                }
+                }                
             }
 
             List<DepositAreaLevelItemData> depositAreaItemDatas = new List<DepositAreaLevelItemData>(levelData.DepositItemDatas);
@@ -64,8 +65,9 @@ namespace Picker3D.EditorSystem
                 platforms.Add(depositArea);
             }
 
-            LevelEditorWindow.SpawnedDepositAreas = depositAreas;
-            LevelEditorWindow.SpawnedPlaforms = platforms;
+            LevelEditorWindow.SpawnedDepositAreas = depositAreas.OrderBy(depostiArea => depostiArea.transform.position.z).ToList();
+            LevelEditorWindow.SpawnedPlaforms = platforms.OrderBy(platform => platform.transform.position.z).ToList();
+            LevelEditorWindow.EditorActions = GetEditorActions(LevelEditorWindow.SpawnedPlaforms);
         } 
 
         static Dictionary<PoolID, PoolObject> GetPoolCollection(PoolDatabase poolDatabase)
@@ -87,6 +89,23 @@ namespace Picker3D.EditorSystem
                 return null;
 
             return prefabsByID[poolID];
+        }
+
+        static Stack<LevelEditorActionType> GetEditorActions(List<Platform> platforms) 
+        {
+            Stack<LevelEditorActionType> editorActions = new Stack<LevelEditorActionType>();            
+            foreach (Platform platform in platforms)
+            {
+                if (platform.TryGetComponent<DepositArea>(out _))
+                {
+                    editorActions.Push(LevelEditorActionType.DepositAreaCreation);
+                }
+                else
+                {
+                    editorActions.Push(LevelEditorActionType.PlatformCreation);
+                }
+            }
+            return editorActions;
         }
     }
 }
