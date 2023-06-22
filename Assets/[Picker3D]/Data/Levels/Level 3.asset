@@ -151,10 +151,6 @@ MonoBehaviour:
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - PoolID: 40
-    Position: {x: -5.8, y: -2, z: 62.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 40
     Position: {x: 2.2, y: 0, z: 82.2}
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}

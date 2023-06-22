@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace Picker3D.EditorSystem 
@@ -12,11 +11,10 @@ namespace Picker3D.EditorSystem
     {
         public static bool IsEnabled => LevelEditorWindow.IsOpened;
         static List<GameObject> Collectables { get; set; } = new List<GameObject>();
-        static int SelectedCollectableIndex { get; set; }
+        static int SelectedCollectableIndex { get; set; }        
 
         private const float HEIGHT_OFFSET = 125;
-        private const string COLLECTABLES_PATH = "Assets/[Picker3D]/Prefabs/Collectables/Items";
-        private const string EDITOR_SCENE_NAME = "Editor";        
+        private const string COLLECTABLES_PATH = "Assets/[Picker3D]/Prefabs/Collectables/Items";           
 
         static LevelEditorPainter() 
         {
@@ -39,6 +37,12 @@ namespace Picker3D.EditorSystem
             
             DrawCollectables();
             CheckHandle();   
+        }
+
+        static void Initialize()
+        {
+            SetDefaultValues();
+            SetCollectablePrefabs();
         }
 
         static void DrawCollectables() 
@@ -109,9 +113,12 @@ namespace Picker3D.EditorSystem
             }
         }
 
-        public static void AddObject(Vector3 position, GameObject prefab)
+        static void AddObject(Vector3 position, GameObject prefab)
         {
             if (prefab == null)
+                return;
+
+            if (!IsPositionAvailable(position))
                 return;
 
             GameObject spawnedObject = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
@@ -125,20 +132,29 @@ namespace Picker3D.EditorSystem
         {
             for (int i = 0; i < LevelEditorWindow.CollectablesParent.transform.childCount; ++i)
             {
-                float distanceToBlock = Vector3.Distance(LevelEditorWindow.CollectablesParent.transform.GetChild(i).transform.position, position);
-                if (distanceToBlock <= 0.2f)
+                float distance = Vector3.Distance(LevelEditorWindow.CollectablesParent.transform.GetChild(i).transform.position, position);
+                if (distance <= 0.2f)
                 {
                     Undo.DestroyObjectImmediate(LevelEditorWindow.CollectablesParent.transform.GetChild(i).gameObject);                    
                     return;
                 }
             }
-        }
-
-        static void Initialize() 
+        }     
+        
+        static bool IsPositionAvailable(Vector3 position) 
         {
-            SetDefaultValues();
-            SetCollectablePrefabs();           
-        }        
+            bool isAvailable = true;
+            for (int i = 0; i < LevelEditorWindow.CollectablesParent.transform.childCount; ++i)
+            {
+                float distance = Vector3.Distance(LevelEditorWindow.CollectablesParent.transform.GetChild(i).transform.position, position);
+                if (distance <= 0.1f)
+                {
+                    isAvailable = false;
+                    break;
+                }
+            }
+            return isAvailable;
+        }
         
         static void SetDefaultValues() 
         {
@@ -155,12 +171,7 @@ namespace Picker3D.EditorSystem
                 GameObject collectable = AssetDatabase.LoadAssetAtPath<GameObject>(path);
                 Collectables.Add(collectable);
             }
-        }
-
-        static bool IsEditorScene()
-        {
-            return UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene().name == EDITOR_SCENE_NAME;
-        }
+        }        
     }
 }
 
