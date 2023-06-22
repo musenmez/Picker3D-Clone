@@ -24,7 +24,7 @@ namespace Picker3D.Runtime
 
         private const float LEFT_BARRIER_ANGLE = 60f;
         private const float RIGHT_BARRIER_ANGLE = -60f;
-        private const float BARRIER_DURATION = 0.75f;
+        private const float BARRIER_DURATION = 0.4f;
         private const float BARRIER_DELAY = 0.5f;
         private const Ease BARRIER_EASE = Ease.Linear;
 
