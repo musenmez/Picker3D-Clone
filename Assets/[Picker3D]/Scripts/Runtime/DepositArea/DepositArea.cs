@@ -18,6 +18,7 @@ namespace Picker3D.Runtime
         
         //Editor and Runtime
         public UnityEvent OnInitialized = new UnityEvent();
+        public UnityEvent OnRequiredAmountChanged = new UnityEvent();
         public UnityEvent OnDepositStarted { get; } = new UnityEvent();
         public UnityEvent OnDepositCompleted { get; } = new UnityEvent();
         public UnityEvent OnDepositFailed { get; } = new UnityEvent();
@@ -25,7 +26,8 @@ namespace Picker3D.Runtime
 
         public const float DEPOSIT_DURATION = 2.5f;
 
-        [Header("Deposit Area")]        
+        [Header("Deposit Area")]
+        [OnValueChanged(nameof(OnRequiredValueChanged))]
         [SerializeField, Range(0, 100)] private int requiredCollectable;        
 
         private IDepositor _lastDepositor;
@@ -118,6 +120,11 @@ namespace Picker3D.Runtime
         {
             _lastDepositor.OnDepositFailed();
             OnDepositFailed.Invoke();
+        }
+
+        private void OnRequiredValueChanged() 
+        {
+            OnRequiredAmountChanged.Invoke();
         }
     }
 }

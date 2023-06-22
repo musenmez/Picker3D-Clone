@@ -39,6 +39,13 @@ namespace Picker3D.Runtime
             SetText();
         }
 
+        //Also Listens Unity Editor Event
+        public void SetText()
+        {
+            string text = _currentCollectableAmount + "/" + DepositArea.RequiredCollectable;
+            depositTextMesh.SetText(text);
+        }
+
         private void UpdateText() 
         {
             if (_updateCoroutine != null)
@@ -58,12 +65,6 @@ namespace Picker3D.Runtime
                 SetText();
                 yield return UpdateDelay;
             }
-        }
-
-        private void SetText() 
-        {
-            string text = _currentCollectableAmount + "/" + DepositArea.RequiredCollectable;
-            depositTextMesh.SetText(text);
-        }
+        }        
     }
 }

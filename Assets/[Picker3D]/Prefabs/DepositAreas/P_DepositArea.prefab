@@ -839,7 +839,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 1
-  requiredCollectable: 5
+  OnRequiredAmountChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5344231497985428909}
+        m_MethodName: SetText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+  requiredCollectable: 10
 --- !u!114 &4926610009059776091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1473,7 +1487,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0/5
+  m_text: 0/10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ebf1379dbc3f7a94893de153379f5f23, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: f89d52ac34818494c9d2bd094feeaa60, type: 2}
@@ -1500,7 +1514,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 41.65
+  m_fontSize: 32.7
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
