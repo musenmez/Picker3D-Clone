@@ -10,7 +10,7 @@ namespace Picker3D.Runtime
         public bool IsThrowingEnabled { get; private set; } 
         public List<IThrowable> Throwables { get; private set; } = new List<IThrowable>();
 
-        private const float THROW_FORCE = 2f;
+        private const float THROW_FORCE = 3f;
         private const float CONSTANT_FORCE = 50f;
 
         private void OnEnable()

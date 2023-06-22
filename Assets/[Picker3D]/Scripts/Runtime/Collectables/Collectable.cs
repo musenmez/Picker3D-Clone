@@ -48,14 +48,18 @@ namespace Picker3D.Runtime
         private void Initialize() 
         {
             IsCollected = false;
-            Rigidbody.velocity = Vector3.zero;
+            Rigidbody.isKinematic = false;
+            Rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         }
 
-        private void Dispose() 
+        private void Dispose()
         {
             OnDisposed.Invoke();
-            Rigidbody.velocity = Vector3.zero;
-            gameObject.SetActive(false);            
+
+            Rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+            Rigidbody.isKinematic = true;
+           
+            gameObject.SetActive(false);
         }
     }
 }

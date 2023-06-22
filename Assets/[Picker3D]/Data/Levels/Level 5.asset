@@ -95,15 +95,7 @@ MonoBehaviour:
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - PoolID: 39
-    Position: {x: -1.8, y: 0, z: 19.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 39
     Position: {x: -0.8, y: 0, z: 19.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 39
-    Position: {x: 2.2, y: 0, z: 19.2}
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - PoolID: 39
@@ -123,10 +115,6 @@ MonoBehaviour:
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - PoolID: 39
-    Position: {x: 4.2, y: 0, z: 26.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 39
     Position: {x: 3.2, y: 0, z: 27.2}
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
@@ -139,23 +127,11 @@ MonoBehaviour:
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - PoolID: 39
-    Position: {x: 0.2, y: 0, z: 26.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 39
-    Position: {x: -3.8, y: 0, z: 34.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 39
     Position: {x: -2.8, y: 0, z: 34.2}
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - PoolID: 39
     Position: {x: -1.8, y: 0, z: 34.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 39
-    Position: {x: 0.2, y: 0, z: 34.2}
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - PoolID: 39
@@ -195,10 +171,6 @@ MonoBehaviour:
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - PoolID: 39
-    Position: {x: 4.2, y: 0, z: 42.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 39
     Position: {x: 3.2, y: 0, z: 42.2}
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
@@ -210,28 +182,12 @@ MonoBehaviour:
     Position: {x: 1.2, y: 0, z: 42.2}
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 39
-    Position: {x: 0.2, y: 0, z: 42.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
   - PoolID: 40
     Position: {x: -2.8, y: 0, z: 74.2}
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - PoolID: 40
     Position: {x: -2.8, y: 0, z: 73.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 40
-    Position: {x: -3.8, y: 0, z: 74.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 40
-    Position: {x: -3.8, y: 0, z: 73.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 40
-    Position: {x: -3.8, y: 0, z: 72.2}
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - PoolID: 40
@@ -263,18 +219,6 @@ MonoBehaviour:
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - PoolID: 40
-    Position: {x: 3.2, y: 0, z: 80.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 40
-    Position: {x: 3.2, y: 0, z: 81.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 40
-    Position: {x: 3.2, y: 0, z: 79.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 40
     Position: {x: 1.2, y: 0, z: 81.2}
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
@@ -284,34 +228,6 @@ MonoBehaviour:
     Scale: {x: 1, y: 1, z: 1}
   - PoolID: 40
     Position: {x: 1.2, y: 0, z: 79.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 40
-    Position: {x: -0.8, y: 0, z: 75.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 40
-    Position: {x: 0.2, y: 0, z: 76.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 40
-    Position: {x: 0.2, y: 0, z: 82.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 40
-    Position: {x: -0.8, y: 0, z: 83.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 40
-    Position: {x: -3.8, y: 0, z: 89.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 40
-    Position: {x: -3.8, y: 0, z: 88.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 40
-    Position: {x: -3.8, y: 0, z: 87.2}
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - PoolID: 40
@@ -336,14 +252,6 @@ MonoBehaviour:
     Scale: {x: 1, y: 1, z: 1}
   - PoolID: 40
     Position: {x: -1.8, y: 0, z: 87.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 40
-    Position: {x: -0.8, y: 0, z: 90.2}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    Scale: {x: 1, y: 1, z: 1}
-  - PoolID: 40
-    Position: {x: 0.2, y: 0, z: 91.2}
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - PoolID: 39
@@ -383,6 +291,162 @@ MonoBehaviour:
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - PoolID: 39
-    Position: {x: 6.2, y: 1, z: 141.2}
+    Position: {x: -0.8, y: 0, z: 20.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 39
+    Position: {x: 0.2, y: 0, z: 20.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 39
+    Position: {x: 1.2, y: 0, z: 20.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 39
+    Position: {x: 0.2, y: 0, z: 21.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 39
+    Position: {x: 1.2, y: 0, z: 25.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 39
+    Position: {x: 2.2, y: 0, z: 25.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 39
+    Position: {x: 3.2, y: 0, z: 25.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 39
+    Position: {x: 2.2, y: 0, z: 24.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 39
+    Position: {x: -2.8, y: 0, z: 33.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 39
+    Position: {x: -1.8, y: 0, z: 33.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 39
+    Position: {x: -0.8, y: 0, z: 33.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 39
+    Position: {x: -1.8, y: 0, z: 32.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 39
+    Position: {x: 1.2, y: 0, z: 43.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 39
+    Position: {x: 3.2, y: 0, z: 43.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 39
+    Position: {x: 2.2, y: 0, z: 43.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 39
+    Position: {x: 2.2, y: 0, z: 44.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: -0.8, y: 0, z: 74.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: -0.8, y: 0, z: 73.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: -0.8, y: 0, z: 72.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: -1.8, y: 0, z: 75.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: 2.2, y: 0, z: 82.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: -0.8, y: 0, z: 75.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: -1.8, y: 0, z: 71.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: -0.8, y: 0, z: 71.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: 1.2, y: 0, z: 78.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: 2.2, y: 0, z: 78.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: 2.2, y: 0, z: 77.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: -2.8, y: 0, z: 86.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: -1.8, y: 0, z: 86.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: -2.8, y: 0, z: 90.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: -1.8, y: 0, z: 90.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: -0.8, y: 0, z: 89.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: -0.8, y: 0, z: 88.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: -0.8, y: 0, z: 87.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: 3.2, y: 0, z: 82.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: 3.2, y: 0, z: 80.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: 3.2, y: 0, z: 81.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: 3.2, y: 0, z: 79.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: 3.2, y: 0, z: 78.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - PoolID: 40
+    Position: {x: 3.2, y: 0, z: 77.2}
     Rotation: {x: -0, y: -0, z: -0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
