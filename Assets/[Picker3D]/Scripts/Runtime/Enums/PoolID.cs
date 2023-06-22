@@ -10,9 +10,11 @@ namespace Picker3D.Enums
         Platform = 10,
         FinishPlatform = 20,
         DepositArea = 30,
-        TinySphereCollectable = 40,
+        TinyCapsuleCollectable = 38,
+        TinyCubeCollectable = 39,
+        TinySphereCollectable = 40,        
         GemIcon = 50,
-        ProgressSegment = 60
+        ProgressSegment = 60,        
     }
 }
 

@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace Picker3D.Runtime 
 {
-    public class DepositArea : MonoBehaviour, IDepositArea
+    public class DepositArea : Platform, IDepositArea
     {
         public bool IsCompleted { get; private set; }
         public bool IsAreaChecked { get; private set; }
@@ -22,6 +22,7 @@ namespace Picker3D.Runtime
 
         public const float DEPOSIT_DURATION = 2.5f;
 
+        [Header("Deposit Area")]
         [SerializeField] private int requiredCollectable;        
 
         private IDepositor _lastDepositor;
