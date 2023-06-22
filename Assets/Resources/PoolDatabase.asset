@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 616b67e431c8d024cb6fdfc49022646a, type: 3}
-  m_Name: Pool Database
+  m_Name: PoolDatabase
   m_EditorClassIdentifier: 
   Pools:
   - Prefab: {fileID: 9108995469115892887, guid: d34868dcb34f8ba419fbf16b2b361566,

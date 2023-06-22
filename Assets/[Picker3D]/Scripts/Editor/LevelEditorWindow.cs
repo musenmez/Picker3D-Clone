@@ -20,13 +20,15 @@ namespace Picker3D.EditorSystem
         public static UnityEvent OnOpened { get; } = new UnityEvent();
         public static UnityEvent OnClosed { get; } = new UnityEvent();
 
+        public static List<Platform> SpawnedPlaforms { get; set; } = new List<Platform>();
+        public static List<DepositArea> SpawnedDepositAreas { get; set; } = new List<DepositArea>();
         static Stack<LevelEditorActionType> EditorActions { get; set; } = new Stack<LevelEditorActionType>();
         static List<DepositArea> DepositAreaPrefabs { get; set; } = new List<DepositArea>();
         static List<string> DepositAreaPrefabNames { get; set; } = new List<string>();
-        static List<DepositArea> SpawnedDepositAreas { get; set; } = new List<DepositArea>();
+        static List<string> LevelDataNames { get; set; } = new List<string>();
+        static List<LevelData> LevelDatas { get; set; } = new List<LevelData>();
         static List<Platform> PlatformPrefabs { get; set; } = new List<Platform>();
-        static List<string> PlatformPrefabNames { get; set; } = new List<string>();
-        static List<Platform> SpawnedPlaforms { get; set; } = new List<Platform>();
+        static List<string> PlatformPrefabNames { get; set; } = new List<string>();        
         
         static readonly Vector3 PlatformDefaultSpawnPosition = new Vector3(0, 0, -12f);
 
@@ -37,9 +39,10 @@ namespace Picker3D.EditorSystem
 
         private const string PLATFORM_PREFAB_PATH = "Assets/[Picker3D]/Prefabs/Platforms";
         private const string DEPOSIT_AREA_PREFAB_PATH = "Assets/[Picker3D]/Prefabs/DepositAreas";
+        private const string LEVEL_DATA_PATH = "Assets/[Picker3D]/Data/Levels";
 
         static int _platformPrefabIndex;
-
+        static int _previewLevelDataIndex;
         static int _depositAreaPrefabIndex;
         static int _requiredCollectable;
 
@@ -87,7 +90,8 @@ namespace Picker3D.EditorSystem
         {
             SetDefaultValues();
             SetPlatformPrefabs();
-            SetDepositAreaPrefabs();          
+            SetDepositAreaPrefabs();
+            SetLevelDataCollection();
             CreateLevelStructure();
         }
 
@@ -230,6 +234,14 @@ namespace Picker3D.EditorSystem
             return DepositAreaPrefabs[_depositAreaPrefabIndex];
         }
 
+        static LevelData GetPreviewLevelData()
+        {
+            if (_previewLevelDataIndex >= LevelDatas.Count)
+                return null;
+
+            return LevelDatas[_previewLevelDataIndex];
+        }
+
         static void DrawDepositAreaSection()
         {
             GUILayout.BeginArea(_depositAreaSection);
@@ -258,6 +270,19 @@ namespace Picker3D.EditorSystem
         static void DrawButtomSection()
         {
             GUILayout.BeginArea(_bottomSection);
+
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Level Data");
+            _previewLevelDataIndex = EditorGUILayout.Popup(_previewLevelDataIndex, LevelDataNames.ToArray());
+            GUILayout.EndHorizontal();
+
+            if (GUILayout.Button("Preview Level", GUILayout.Height(30)))
+            {
+                PreviewLevel();               
+            }
+
+            GUILayout.Space(30);
             GUILayout.BeginHorizontal();           
             if (GUILayout.Button("Undo", GUILayout.Height(30)))
             {
@@ -277,9 +302,9 @@ namespace Picker3D.EditorSystem
                 {
                     LevelEditorSave.UpdateLevel(CurrentLevelData);
                 }
-            }
-            
+            }  
             GUILayout.EndHorizontal();
+
             GUILayout.EndArea();
         }
 
@@ -322,6 +347,14 @@ namespace Picker3D.EditorSystem
 
             SpawnedDepositAreas.Remove(depositArea);
             DestroyImmediate(depositArea.gameObject);
+        }
+
+        static void PreviewLevel() 
+        {
+            CurrentLevelData = GetPreviewLevelData();
+            DestroyLevel();
+            CreateLevelStructure();
+            LevelEditorPreview.PreviewLevel(CurrentLevelData);
         }
 
         static void SetPlatformSection() 
@@ -374,20 +407,37 @@ namespace Picker3D.EditorSystem
             }
         }
 
+        static void SetLevelDataCollection() 
+        {
+            string[] guids = AssetDatabase.FindAssets("t:LevelData", new string[] { LEVEL_DATA_PATH });
+
+            foreach (string guid in guids)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                LevelData levelData = AssetDatabase.LoadAssetAtPath<LevelData>(path);
+                LevelDatas.Add(levelData);
+                LevelDataNames.Add(levelData.name);
+            }
+        }
+
         static bool CheckIfWindowOpen() 
         {
             LevelParent = GameObject.Find("Level Parent");
             return IsOpened || LevelParent != null;
         }
 
-        static void Dispose() 
+        static void DestroyLevel() 
         {
             LevelParent = GameObject.Find("Level Parent");
-            if (LevelParent != null) 
+            if (LevelParent != null)
             {
                 DestroyImmediate(LevelParent);
             }
+        }
 
+        static void Dispose() 
+        {
+            DestroyLevel();
             IsOpened = false;
             OnClosed.Invoke();
         }
