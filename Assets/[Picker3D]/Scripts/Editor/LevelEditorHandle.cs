@@ -13,7 +13,7 @@ namespace Picker3D.EditorSystem
 
         static readonly Color PaintColor = Color.green;
         static readonly Color EraseColor = Color.red;
-        static readonly Vector3 SnapOffset = new Vector3(0.2f, 0.2f, 0.2f);
+        static readonly Vector3 SnapOffset = new Vector3(0.2f, 0f, 0.2f);
 
         private const float CUBE_WIDTH = 0.25f;
         private const string EDITOR_SCENE_NAME = "Editor";
@@ -37,19 +37,19 @@ namespace Picker3D.EditorSystem
                 return;            
 
             UpdateHandlePosition();
-            UpdateIsMouseInValidArea(sceneView.position);
+            CheckMouseAvailable(sceneView.position);
             UpdateRepaint();
 
             DrawCubeDrawPreview();
         }
         
-        static void UpdateIsMouseInValidArea(Rect sceneViewRect)
+        static void CheckMouseAvailable(Rect sceneViewRect)
         {
-            bool isInValidArea = Event.current.mousePosition.y < sceneViewRect.height - 35;
+            bool isMouseAvailable = Event.current.mousePosition.y < sceneViewRect.height - LevelEditorToolsMenu.GRID_HEIGHT;
 
-            if (isInValidArea != IsMouseInValidArea)
+            if (isMouseAvailable != IsMouseInValidArea)
             {
-                IsMouseInValidArea = isInValidArea;
+                IsMouseInValidArea = isMouseAvailable;
                 SceneView.RepaintAll();
             }
         }
@@ -66,12 +66,7 @@ namespace Picker3D.EditorSystem
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                Vector3 offset = Vector3.zero;
-
-                if (LevelEditorToolsMenu.SelectedTool == 1)
-                {
-                    offset = hit.normal;
-                }               
+                Vector3 offset = Vector3.zero;               
 
                 CurrentHandlePosition.x = Mathf.Floor(hit.point.x + offset.x);
                 CurrentHandlePosition.y = Mathf.Floor(hit.point.y + offset.y);
@@ -93,7 +88,7 @@ namespace Picker3D.EditorSystem
 
         static void DrawCubeDrawPreview()
         {
-            if (IsMouseInValidArea == false)
+            if (IsMouseInValidArea == false || LevelEditorToolsMenu.SelectedTool == 0)
                 return;
 
             Handles.color = GetHandleColor(); ;
