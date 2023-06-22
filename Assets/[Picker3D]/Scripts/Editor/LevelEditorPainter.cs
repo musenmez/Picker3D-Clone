@@ -66,7 +66,7 @@ namespace Picker3D.EditorSystem
             }
 
             int controlId = GUIUtility.GetControlID(FocusType.Passive);
-            if (Event.current.type == EventType.MouseDown && LevelEditorHandle.IsMouseAvailable && Event.current.button != 2)
+            if (Event.current.type == EventType.MouseDown && LevelEditorHandle.IsMouseAvailable && Event.current.button == 0)
             {
                 if (LevelEditorToolsMenu.SelectedTool == 1)
                 {
