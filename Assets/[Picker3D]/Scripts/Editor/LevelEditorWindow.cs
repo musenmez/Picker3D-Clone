@@ -32,8 +32,12 @@ namespace Picker3D.EditorSystem
         
         static readonly Vector3 PlatformDefaultSpawnPosition = new Vector3(0, 0, -12f);
 
-        private const float MIN_WINDOW_WIDTH = 400f;
-        private const float MIN_WINDOW_HEIGHT = 600f;       
+        private const float MIN_WINDOW_WIDTH = 300f;
+        private const float MIN_WINDOW_HEIGHT = PLATFORM_SECTION_HEIGHT + DEPOSIT_AREA_SECTION_HEIGHT + BOTTOM_SECTION_HEIGHT;
+
+        private const float PLATFORM_SECTION_HEIGHT = 85;
+        private const float DEPOSIT_AREA_SECTION_HEIGHT = 125f;
+        private const float BOTTOM_SECTION_HEIGHT = 125f;
 
         private const int MAX_REQUIRED_COLLECTABLE = 100;
 
@@ -44,7 +48,7 @@ namespace Picker3D.EditorSystem
         static int _platformPrefabIndex;
         static int _previewLevelDataIndex;
         static int _depositAreaPrefabIndex;
-        static int _requiredCollectable;
+        static int _requiredCollectable = 10;
 
         static Rect _platformSection;
         static Rect _depositAreaSection;
@@ -362,23 +366,23 @@ namespace Picker3D.EditorSystem
             _platformSection.x = 0;
             _platformSection.y = 0;
             _platformSection.width = Screen.width;
-            _platformSection.height = Screen.height / 3f;
+            _platformSection.height = PLATFORM_SECTION_HEIGHT;
         }
 
         static void SetDepositAreaSection() 
         {
             _depositAreaSection.x = 0;
-            _depositAreaSection.y = Screen.height / 3f;
+            _depositAreaSection.y = PLATFORM_SECTION_HEIGHT;
             _depositAreaSection.width = Screen.width;
-            _depositAreaSection.height = Screen.height / 3f;     
+            _depositAreaSection.height = DEPOSIT_AREA_SECTION_HEIGHT;     
         }
 
         static void SetBottomSection() 
         {
             _bottomSection.x = 0;
-            _bottomSection.y = (Screen.height / 3f) * 2f;
+            _bottomSection.y = PLATFORM_SECTION_HEIGHT + DEPOSIT_AREA_SECTION_HEIGHT;
             _bottomSection.width = Screen.width;
-            _bottomSection.height = Screen.height / 3f;
+            _bottomSection.height = BOTTOM_SECTION_HEIGHT;
         }
 
         static void SetPlatformPrefabs()
@@ -445,6 +449,7 @@ namespace Picker3D.EditorSystem
         private static void SetWindowSize(LevelEditorWindow window) 
         {
             window.minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
+            window.maxSize = window.minSize;
         }
     }
 }
