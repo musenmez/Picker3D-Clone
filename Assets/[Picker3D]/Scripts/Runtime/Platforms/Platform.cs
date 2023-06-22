@@ -21,11 +21,21 @@ namespace Picker3D.Runtime
             Vector3 position = transform.position;
             position.z = platformRenderer.bounds.min.z;           
             return position;
+        }       
+
+        public virtual void SetGroundMaterial(Material groundMaterial) 
+        {
+            if (groundMaterial == null)
+                return;
+
+            platformRenderer.material = groundMaterial;
         }
 
-        public virtual void SetMaterials(Material groundMaterial, Material borderMaterial) 
+        public virtual void SetBorderMaterial(Material borderMaterial) 
         {
-            platformRenderer.material = groundMaterial;
+            if (borderMaterial == null)
+                return;
+
             foreach (MeshRenderer borderRenderer in borderRenderes)
             {
                 borderRenderer.material = borderMaterial;

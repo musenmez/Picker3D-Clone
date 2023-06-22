@@ -17,6 +17,9 @@ namespace Picker3D.EditorSystem
 
         public static void PreviewLevel(LevelData levelData) 
         {
+            if (levelData == null)
+                return;
+
             PoolDatabase poolDatabase = Resources.Load<PoolDatabase>(POOL_DATABASE_PATH);
             Dictionary<PoolID, PoolObject> prefabsByID = GetPoolCollection(poolDatabase);
 
@@ -68,6 +71,9 @@ namespace Picker3D.EditorSystem
             LevelEditorWindow.SpawnedDepositAreas = depositAreas.OrderBy(depostiArea => depostiArea.transform.position.z).ToList();
             LevelEditorWindow.SpawnedPlaforms = platforms.OrderBy(platform => platform.transform.position.z).ToList();
             LevelEditorWindow.EditorActions = GetEditorActions(LevelEditorWindow.SpawnedPlaforms);
+            LevelEditorWindow.GroundMaterial = levelData.GroundMaterial;
+            LevelEditorWindow.BorderMaterial = levelData.BorderMaterial;
+            LevelEditorWindow.SetMaterials();
         } 
 
         static Dictionary<PoolID, PoolObject> GetPoolCollection(PoolDatabase poolDatabase)
