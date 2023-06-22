@@ -10,7 +10,7 @@ namespace Picker3D.EditorSystem
     [InitializeOnLoad]
     public class LevelEditorPainter : Editor
     {
-        public static bool IsEnabled { get; private set; }
+        public static bool IsEnabled => LevelEditorWindow.IsOpened;
         static List<GameObject> Collectables { get; set; } = new List<GameObject>();
         static int SelectedCollectableIndex { get; set; }
 
@@ -21,35 +21,34 @@ namespace Picker3D.EditorSystem
         static LevelEditorPainter() 
         {
             SceneView.duringSceneGui -= OnSceneGUI;
-            SceneView.duringSceneGui += OnSceneGUI;  
+            SceneView.duringSceneGui += OnSceneGUI;
+
+            LevelEditorWindow.OnClosed.RemoveListener(Initialize);
+            LevelEditorWindow.OnClosed.AddListener(Initialize);
         }
 
         private void OnDestroy()
         {
-            SceneView.duringSceneGui -= OnSceneGUI;            
+            LevelEditorWindow.OnClosed.RemoveListener(Initialize);
         }
 
         static void OnSceneGUI(SceneView sceneView)
         {
-            if (!IsEditorScene())
-            {
-                Disable();
-                return;
-            }               
-
-            Enable();
-            DrawCollectables(sceneView);
+            if (!IsEnabled)
+                return;     
+            
+            DrawCollectables();
             CheckHandle();   
         }
 
-        static void DrawCollectables(SceneView sceneView) 
+        static void DrawCollectables() 
         {
             Handles.BeginGUI();
             GUI.Box(new Rect(0, HEIGHT_OFFSET, 110, 400), GUIContent.none, EditorStyles.textArea);
 
             for (int i = 0; i < Collectables.Count; ++i)
             {
-                DrawCollectable(i, sceneView.position);
+                DrawCollectable(i);
             }
 
             Handles.EndGUI();
@@ -62,14 +61,8 @@ namespace Picker3D.EditorSystem
                 return;
             }
 
-            //This method is very similar to the one in E08. Only the AddBlock function is different
-
-            //By creating a new ControlID here we can grab the mouse input to the SceneView and prevent Unitys default mouse handling from happening
-            //FocusType.Passive means this control cannot receive keyboard input since we are only interested in mouse input
             int controlId = GUIUtility.GetControlID(FocusType.Passive);
-
-            //If the left mouse is being clicked and no modifier buttons are being held
-            if (Event.current.type == EventType.MouseDown && LevelEditorHandle.IsMouseInValidArea)
+            if (Event.current.type == EventType.MouseDown && LevelEditorHandle.IsMouseAvailable)
             {
                 if (LevelEditorToolsMenu.SelectedTool == 1)
                 {
@@ -84,8 +77,7 @@ namespace Picker3D.EditorSystem
                     }
                 }
             }
-
-            //If we press escape we want to automatically deselect our own painting or erasing tools
+            
             if (Event.current.type == EventType.KeyDown &&
                 Event.current.keyCode == KeyCode.Escape)
             {
@@ -95,7 +87,7 @@ namespace Picker3D.EditorSystem
             HandleUtility.AddDefaultControl(controlId);
         }
 
-        static void DrawCollectable(int index, Rect sceneViewRect)
+        static void DrawCollectable(int index)
         {
             bool isActive = false;           
 
@@ -142,23 +134,11 @@ namespace Picker3D.EditorSystem
             }
         }
 
-        static void Enable() 
+        static void Initialize() 
         {
-            if (IsEnabled)
-                return;
-
-            IsEnabled = true;
             SetDefaultValues();
             SetCollectablePrefabs();           
-        }
-
-        static void Disable() 
-        {
-            if (!IsEnabled)
-                return;
-
-            IsEnabled = false;
-        }
+        }        
         
         static void SetDefaultValues() 
         {

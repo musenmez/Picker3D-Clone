@@ -9,6 +9,7 @@ namespace Picker3D.EditorSystem
     [InitializeOnLoad]
     public class LevelEditorToolsMenu : Editor
     {
+        public static bool IsEnabled => LevelEditorWindow.IsOpened;
         public static int SelectedTool { get; set; }
         static string[] ButtonLabels { get; } = new string[] { "None", "Erase", "Paint" };
 
@@ -23,6 +24,9 @@ namespace Picker3D.EditorSystem
 
         static void OnSceneGUI(SceneView sceneView) 
         {
+            if (!IsEnabled)
+                return;
+
             DrawToolsMenu(sceneView);
         }
 

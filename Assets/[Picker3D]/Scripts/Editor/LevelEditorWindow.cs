@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Picker3D.Runtime;
+using UnityEngine.Events;
 
 namespace Picker3D.EditorSystem 
 {
@@ -12,6 +13,9 @@ namespace Picker3D.EditorSystem
         public static GameObject PlatformParent { get; private set; }
         public static GameObject DepositAreaParent { get; private set; }
         public static GameObject CollectablesParent { get; private set; }
+        public static bool IsOpened { get; private set; }
+        public static UnityEvent OnOpened { get; } = new UnityEvent();
+        public static UnityEvent OnClosed { get; } = new UnityEvent();
 
         private Stack<LevelEditorActionType> EditorActions { get; set; } = new Stack<LevelEditorActionType>();
         private List<DepositArea> DepositAreaPrefabs { get; set; } = new List<DepositArea>();
@@ -24,23 +28,18 @@ namespace Picker3D.EditorSystem
         private readonly Color SectionColor = new Color(40 / 255f, 40 / 255f, 40 / 255f);
         private readonly Vector3 PlatformDefaultSpawnPosition = new Vector3(0, 0, -12f);
 
-        private const float WINDOW_WIDTH = 400f;
-        private const float WINDOW_HEIGHT = 600f;
+        private const float MIN_WINDOW_WIDTH = 400f;
+        private const float MIN_WINDOW_HEIGHT = 600f;       
 
         private const int MAX_REQUIRED_COLLECTABLE = 100;
 
         private const string PLATFORM_PREFAB_PATH = "Assets/[Picker3D]/Prefabs/Platforms";
-        private const string DEPOSIT_AREA_PREFAB_PATH = "Assets/[Picker3D]/Prefabs/DepositAreas";
-
-        private const string OFFSET_INFO = "Spawn position OFFSET necessary for the level start camera view. Without OFFSET level CANNOT look seemles.";
+        private const string DEPOSIT_AREA_PREFAB_PATH = "Assets/[Picker3D]/Prefabs/DepositAreas";       
 
         private int _platformPrefabIndex;
-        private Vector3 _platformSpawnPosition;
-
+     
         private int _depositAreaPrefabIndex;
-        private int _requiredCollectable;
-
-        private Texture2D _sectionTexture;
+        private int _requiredCollectable;     
 
         private Rect _platformSection;
         private Rect _depositAreaSection;
@@ -49,9 +48,12 @@ namespace Picker3D.EditorSystem
         [MenuItem("Picker3D/Level Editor Window")]
         public static void OpenWindow() 
         {
-            LevelEditorWindow window = GetWindow<LevelEditorWindow>("Level Editor");
-            SetWindowSize(window);
+            LevelEditorWindow window = GetWindow<LevelEditorWindow>("Level Editor");            
+            SetWindowSize(window);            
             window.Show();
+
+            IsOpened = true;
+            OnOpened.Invoke();
         }
 
         private void OnEnable()
@@ -59,15 +61,14 @@ namespace Picker3D.EditorSystem
             Initialize();
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             Dispose();
         }
 
         private void OnGUI()
         {
-            DrawLayouts();
-            DrawHandlers();
+            DrawLayouts();        
             DrawPlatformSection();
             DrawDepositAreaSection();
             DrawButtomSection();
@@ -77,8 +78,7 @@ namespace Picker3D.EditorSystem
         {
             SetDefaultValues();
             SetPlatformPrefabs();
-            SetDepositAreaPrefabs();
-            CreateSectionTexture();
+            SetDepositAreaPrefabs();          
             CreateLevelStructure();
         }
 
@@ -88,16 +88,8 @@ namespace Picker3D.EditorSystem
             SpawnedPlaforms.Clear();
             PlatformPrefabs.Clear();
             PlatformPrefabNames.Clear();
-            _platformPrefabIndex = 0;
-            _platformSpawnPosition = PlatformDefaultSpawnPosition;
-        }
-
-        private void CreateSectionTexture() 
-        {
-            _sectionTexture = new Texture2D(1, 1);
-            _sectionTexture.SetPixel(0, 0, SectionColor);
-            _sectionTexture.Apply();
-        }
+            _platformPrefabIndex = 0;    
+        }      
 
         private void CreateLevelStructure() 
         {
@@ -115,12 +107,7 @@ namespace Picker3D.EditorSystem
             CollectablesParent = new GameObject("Collectables");
             CollectablesParent.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
             CollectablesParent.transform.SetParent(LevelParent.transform);
-        }
-
-        private void DrawHandlers() 
-        {
-            
-        }
+        }       
 
         private void DrawLayouts() 
         {
@@ -131,10 +118,7 @@ namespace Picker3D.EditorSystem
 
         private void DrawPlatformSection()
         {
-            GUILayout.BeginArea(_platformSection);
-
-            GUILayout.Space(10);
-            _platformSpawnPosition = EditorGUILayout.Vector3Field("Spawn Position", _platformSpawnPosition);
+            GUILayout.BeginArea(_platformSection);        
 
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
@@ -147,8 +131,7 @@ namespace Picker3D.EditorSystem
             {
                 CreatePlatform();
             }
-
-            EditorGUILayout.HelpBox(OFFSET_INFO, MessageType.Info);
+            
             GUILayout.EndArea();
         }        
 
@@ -333,8 +316,7 @@ namespace Picker3D.EditorSystem
             _depositAreaSection.x = 0;
             _depositAreaSection.y = Screen.height / 3f;
             _depositAreaSection.width = Screen.width;
-            _depositAreaSection.height = Screen.height / 3f;           
-            GUI.DrawTexture(_depositAreaSection, _sectionTexture);
+            _depositAreaSection.height = Screen.height / 3f;     
         }
 
         private void SetBottomSection() 
@@ -376,12 +358,15 @@ namespace Picker3D.EditorSystem
             if (LevelParent != null) 
             {
                 DestroyImmediate(LevelParent);
-            }                
+            }
+
+            IsOpened = false;
+            OnClosed.Invoke();
         }
 
         private static void SetWindowSize(LevelEditorWindow window) 
         {
-            window.minSize = new Vector2(WINDOW_WIDTH, WINDOW_HEIGHT);
+            window.minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
         }
     }
 }

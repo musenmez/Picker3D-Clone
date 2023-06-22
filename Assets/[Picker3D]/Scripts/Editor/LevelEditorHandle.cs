@@ -8,15 +8,15 @@ namespace Picker3D.EditorSystem
     [InitializeOnLoad]
     public class LevelEditorHandle : Editor
     {
-        public static bool IsMouseInValidArea { get; private set; }
+        public static bool IsEnabled => LevelEditorWindow.IsOpened;
+        public static bool IsMouseAvailable { get; private set; }
         public static Vector3 CurrentHandlePosition = Vector3.zero;
 
         static readonly Color PaintColor = Color.green;
         static readonly Color EraseColor = Color.red;
         static readonly Vector3 SnapOffset = new Vector3(0.2f, 0f, 0.2f);
 
-        private const float CUBE_WIDTH = 0.25f;
-        private const string EDITOR_SCENE_NAME = "Editor";
+        private const float CUBE_WIDTH = 0.25f;    
 
         private static Vector3 _lastHandlePosition = Vector3.zero;
 
@@ -33,23 +33,22 @@ namespace Picker3D.EditorSystem
 
         static void OnSceneGUI(SceneView sceneView)
         {
-            if (!IsEditorScene())
+            if (!IsEnabled)
                 return;            
 
             UpdateHandlePosition();
             CheckMouseAvailable(sceneView.position);
             UpdateRepaint();
-
-            DrawCubeDrawPreview();
+            DrawCubeHandle();
         }
         
         static void CheckMouseAvailable(Rect sceneViewRect)
         {
             bool isMouseAvailable = Event.current.mousePosition.y < sceneViewRect.height - LevelEditorToolsMenu.GRID_HEIGHT;
 
-            if (isMouseAvailable != IsMouseInValidArea)
+            if (isMouseAvailable != IsMouseAvailable)
             {
-                IsMouseInValidArea = isMouseAvailable;
+                IsMouseAvailable = isMouseAvailable;
                 SceneView.RepaintAll();
             }
         }
@@ -66,12 +65,7 @@ namespace Picker3D.EditorSystem
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                Vector3 offset = Vector3.zero;               
-
-                CurrentHandlePosition.x = Mathf.Floor(hit.point.x + offset.x);
-                CurrentHandlePosition.y = Mathf.Floor(hit.point.y + offset.y);
-                CurrentHandlePosition.z = Mathf.Floor(hit.point.z + offset.z);
-
+                CurrentHandlePosition = new Vector3(Mathf.Floor(hit.point.x), Mathf.Floor(hit.point.y), Mathf.Floor(hit.point.z));
                 CurrentHandlePosition += SnapOffset;
             }
         }
@@ -86,9 +80,9 @@ namespace Picker3D.EditorSystem
             }
         }
 
-        static void DrawCubeDrawPreview()
+        static void DrawCubeHandle()
         {
-            if (IsMouseInValidArea == false || LevelEditorToolsMenu.SelectedTool == 0)
+            if (IsMouseAvailable == false || LevelEditorToolsMenu.SelectedTool == 0)
                 return;
 
             Handles.color = GetHandleColor(); ;
@@ -97,15 +91,15 @@ namespace Picker3D.EditorSystem
 
         static void DrawHandlesCube(Vector3 center)
         {
-            Vector3 p1 = center + Vector3.up * CUBE_WIDTH + Vector3.right * CUBE_WIDTH + Vector3.forward * CUBE_WIDTH;
-            Vector3 p2 = center + Vector3.up * CUBE_WIDTH + Vector3.right * CUBE_WIDTH - Vector3.forward * CUBE_WIDTH;
-            Vector3 p3 = center + Vector3.up * CUBE_WIDTH - Vector3.right * CUBE_WIDTH - Vector3.forward * CUBE_WIDTH;
-            Vector3 p4 = center + Vector3.up * CUBE_WIDTH - Vector3.right * CUBE_WIDTH + Vector3.forward * CUBE_WIDTH;
+            Vector3 p1 = center + Vector3.up * CUBE_WIDTH * 2f + Vector3.right * CUBE_WIDTH + Vector3.forward * CUBE_WIDTH;
+            Vector3 p2 = center + Vector3.up * CUBE_WIDTH * 2f + Vector3.right * CUBE_WIDTH - Vector3.forward * CUBE_WIDTH;
+            Vector3 p3 = center + Vector3.up * CUBE_WIDTH * 2f - Vector3.right * CUBE_WIDTH - Vector3.forward * CUBE_WIDTH;
+            Vector3 p4 = center + Vector3.up * CUBE_WIDTH * 2f - Vector3.right * CUBE_WIDTH + Vector3.forward * CUBE_WIDTH;
 
-            Vector3 p5 = center - Vector3.up * CUBE_WIDTH + Vector3.right * CUBE_WIDTH + Vector3.forward * CUBE_WIDTH;
-            Vector3 p6 = center - Vector3.up * CUBE_WIDTH + Vector3.right * CUBE_WIDTH - Vector3.forward * CUBE_WIDTH;
-            Vector3 p7 = center - Vector3.up * CUBE_WIDTH - Vector3.right * CUBE_WIDTH - Vector3.forward * CUBE_WIDTH;
-            Vector3 p8 = center - Vector3.up * CUBE_WIDTH - Vector3.right * CUBE_WIDTH + Vector3.forward * CUBE_WIDTH;
+            Vector3 p5 = center + Vector3.right * CUBE_WIDTH + Vector3.forward * CUBE_WIDTH;
+            Vector3 p6 = center + Vector3.right * CUBE_WIDTH - Vector3.forward * CUBE_WIDTH;
+            Vector3 p7 = center - Vector3.right * CUBE_WIDTH - Vector3.forward * CUBE_WIDTH;
+            Vector3 p8 = center - Vector3.right * CUBE_WIDTH + Vector3.forward * CUBE_WIDTH;
           
             Handles.DrawLine(p1, p2);
             Handles.DrawLine(p2, p3);
@@ -126,12 +120,7 @@ namespace Picker3D.EditorSystem
         static Color GetHandleColor() 
         {
             return LevelEditorToolsMenu.SelectedTool == 1 ? EraseColor : PaintColor;
-        }
-        
-        static bool IsEditorScene()
-        {
-            return UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene().name == EDITOR_SCENE_NAME;
-        }
+        }      
     }
 }
 
