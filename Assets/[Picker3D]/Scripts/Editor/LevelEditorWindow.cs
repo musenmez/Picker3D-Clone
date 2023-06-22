@@ -6,7 +6,7 @@ using Picker3D.Runtime;
 using UnityEngine.Events;
 
 namespace Picker3D.EditorSystem 
-{
+{  
     public class LevelEditorWindow : EditorWindow
     {
         public static GameObject LevelParent { get; private set; }
@@ -17,16 +17,15 @@ namespace Picker3D.EditorSystem
         public static UnityEvent OnOpened { get; } = new UnityEvent();
         public static UnityEvent OnClosed { get; } = new UnityEvent();
 
-        private Stack<LevelEditorActionType> EditorActions { get; set; } = new Stack<LevelEditorActionType>();
-        private List<DepositArea> DepositAreaPrefabs { get; set; } = new List<DepositArea>();
-        private List<string> DepositAreaPrefabNames { get; set; } = new List<string>();
-        private List<DepositArea> SpawnedDepositAreas { get; set; } = new List<DepositArea>();
-        private List<Platform> PlatformPrefabs { get; set; } = new List<Platform>();
-        private List<string> PlatformPrefabNames { get; set; } = new List<string>();
-        private List<Platform> SpawnedPlaforms { get; set; } = new List<Platform>();
-
-        private readonly Color SectionColor = new Color(40 / 255f, 40 / 255f, 40 / 255f);
-        private readonly Vector3 PlatformDefaultSpawnPosition = new Vector3(0, 0, -12f);
+        static Stack<LevelEditorActionType> EditorActions { get; set; } = new Stack<LevelEditorActionType>();
+        static List<DepositArea> DepositAreaPrefabs { get; set; } = new List<DepositArea>();
+        static List<string> DepositAreaPrefabNames { get; set; } = new List<string>();
+        static List<DepositArea> SpawnedDepositAreas { get; set; } = new List<DepositArea>();
+        static List<Platform> PlatformPrefabs { get; set; } = new List<Platform>();
+        static List<string> PlatformPrefabNames { get; set; } = new List<string>();
+        static List<Platform> SpawnedPlaforms { get; set; } = new List<Platform>();
+        
+        static readonly Vector3 PlatformDefaultSpawnPosition = new Vector3(0, 0, -12f);
 
         private const float MIN_WINDOW_WIDTH = 400f;
         private const float MIN_WINDOW_HEIGHT = 600f;       
@@ -34,20 +33,22 @@ namespace Picker3D.EditorSystem
         private const int MAX_REQUIRED_COLLECTABLE = 100;
 
         private const string PLATFORM_PREFAB_PATH = "Assets/[Picker3D]/Prefabs/Platforms";
-        private const string DEPOSIT_AREA_PREFAB_PATH = "Assets/[Picker3D]/Prefabs/DepositAreas";       
+        private const string DEPOSIT_AREA_PREFAB_PATH = "Assets/[Picker3D]/Prefabs/DepositAreas";
 
-        private int _platformPrefabIndex;
-     
-        private int _depositAreaPrefabIndex;
-        private int _requiredCollectable;     
+        static int _platformPrefabIndex;
 
-        private Rect _platformSection;
-        private Rect _depositAreaSection;
-        private Rect _bottomSection;        
+        static int _depositAreaPrefabIndex;
+        static int _requiredCollectable;
+
+        static Rect _platformSection;
+        static Rect _depositAreaSection;
+        static Rect _bottomSection;           
 
         [MenuItem("Picker3D/Level Editor Window")]
         public static void OpenWindow() 
         {
+            Initialize();
+
             LevelEditorWindow window = GetWindow<LevelEditorWindow>("Level Editor");            
             SetWindowSize(window);            
             window.Show();
@@ -56,10 +57,12 @@ namespace Picker3D.EditorSystem
             OnOpened.Invoke();
         }
 
-        private void OnEnable()
+        [UnityEditor.Callbacks.DidReloadScripts]
+        public static void CloseWindow()
         {
-            Initialize();
-        }
+            LevelEditorWindow window = GetWindow<LevelEditorWindow>("Level Editor");          
+            window.Close();
+        }        
 
         private void OnDestroy()
         {
@@ -72,9 +75,9 @@ namespace Picker3D.EditorSystem
             DrawPlatformSection();
             DrawDepositAreaSection();
             DrawButtomSection();
-        }           
+        }
 
-        private void Initialize() 
+        static void Initialize() 
         {
             SetDefaultValues();
             SetPlatformPrefabs();
@@ -82,16 +85,16 @@ namespace Picker3D.EditorSystem
             CreateLevelStructure();
         }
 
-        private void SetDefaultValues() 
+        static void SetDefaultValues() 
         {
             EditorActions.Clear();
             SpawnedPlaforms.Clear();
             PlatformPrefabs.Clear();
             PlatformPrefabNames.Clear();
             _platformPrefabIndex = 0;    
-        }      
+        }
 
-        private void CreateLevelStructure() 
+        static void CreateLevelStructure() 
         {
             LevelParent = new GameObject("Level Parent");
             LevelParent.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
@@ -107,16 +110,16 @@ namespace Picker3D.EditorSystem
             CollectablesParent = new GameObject("Collectables");
             CollectablesParent.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
             CollectablesParent.transform.SetParent(LevelParent.transform);
-        }       
+        }
 
-        private void DrawLayouts() 
+        static void DrawLayouts() 
         {
             SetPlatformSection();
             SetDepositAreaSection();
             SetBottomSection();
         }
 
-        private void DrawPlatformSection()
+        static void DrawPlatformSection()
         {
             GUILayout.BeginArea(_platformSection);        
 
@@ -133,9 +136,9 @@ namespace Picker3D.EditorSystem
             }
             
             GUILayout.EndArea();
-        }        
+        }
 
-        private void CreatePlatform()
+        static void CreatePlatform()
         {
             Platform lastPlatform = GetLastSpawnedPlatform();
             Vector3 spawnPosition = lastPlatform == null ? PlatformDefaultSpawnPosition : lastPlatform.GetMaxPosition();
@@ -153,7 +156,7 @@ namespace Picker3D.EditorSystem
             EditorActions.Push(LevelEditorActionType.PlatformCreation);
         }
 
-        private void CreateDepositArea()
+        static void CreateDepositArea()
         {
             Platform lastPlatform = GetLastSpawnedPlatform();
             Vector3 spawnPosition = lastPlatform == null ? PlatformDefaultSpawnPosition : lastPlatform.GetMaxPosition();
@@ -173,9 +176,9 @@ namespace Picker3D.EditorSystem
             SpawnedDepositAreas.Add(spawnedDepositArea);
 
             EditorActions.Push(LevelEditorActionType.DepositAreaCreation);
-        }       
+        }
 
-        private Platform GetLastSpawnedPlatform() 
+        static Platform GetLastSpawnedPlatform() 
         {
             List<Platform> platforms = new List<Platform>(SpawnedPlaforms);
             for (int i = platforms.Count - 1; i >= 0; i--)
@@ -190,7 +193,7 @@ namespace Picker3D.EditorSystem
             return null;
         }
 
-        private DepositArea GetLastSpawnedDepositArea()
+        static DepositArea GetLastSpawnedDepositArea()
         {
             List<DepositArea> depositAreas = new List<DepositArea>(SpawnedDepositAreas);
             for (int i = depositAreas.Count - 1; i >= 0; i--)
@@ -205,7 +208,7 @@ namespace Picker3D.EditorSystem
             return null;
         }
 
-        private Platform GetPlatformPrefab() 
+        static Platform GetPlatformPrefab() 
         {
             if (_platformPrefabIndex >= PlatformPrefabs.Count)
                 return null;
@@ -213,7 +216,7 @@ namespace Picker3D.EditorSystem
             return PlatformPrefabs[_platformPrefabIndex];
         }
 
-        private DepositArea GetDepositAreaPrefab() 
+        static DepositArea GetDepositAreaPrefab() 
         {
             if (_depositAreaPrefabIndex >= DepositAreaPrefabs.Count)
                 return null;
@@ -221,7 +224,7 @@ namespace Picker3D.EditorSystem
             return DepositAreaPrefabs[_depositAreaPrefabIndex];
         }
 
-        private void DrawDepositAreaSection()
+        static void DrawDepositAreaSection()
         {
             GUILayout.BeginArea(_depositAreaSection);
 
@@ -246,7 +249,7 @@ namespace Picker3D.EditorSystem
             GUILayout.EndArea();
         }
 
-        private void DrawButtomSection()
+        static void DrawButtomSection()
         {
             GUILayout.BeginArea(_bottomSection);
             GUILayout.BeginHorizontal();           
@@ -262,7 +265,7 @@ namespace Picker3D.EditorSystem
             GUILayout.EndArea();
         }
 
-        private void Undo()
+        static void Undo()
         {
             if (EditorActions.Count == 0)
                 return;
@@ -283,7 +286,7 @@ namespace Picker3D.EditorSystem
             }
         }
 
-        private void UndoPlatform() 
+        static void UndoPlatform() 
         {
             Platform lastPlatform = GetLastSpawnedPlatform();
             if (lastPlatform == null)
@@ -293,7 +296,7 @@ namespace Picker3D.EditorSystem
             DestroyImmediate(lastPlatform.gameObject);
         }
 
-        private void UndoDepositArea()
+        static void UndoDepositArea()
         {
             DepositArea depositArea = GetLastSpawnedDepositArea();
             if (depositArea == null)
@@ -303,7 +306,7 @@ namespace Picker3D.EditorSystem
             DestroyImmediate(depositArea.gameObject);
         }
 
-        private void SetPlatformSection() 
+        static void SetPlatformSection() 
         {
             _platformSection.x = 0;
             _platformSection.y = 0;
@@ -311,7 +314,7 @@ namespace Picker3D.EditorSystem
             _platformSection.height = Screen.height / 3f;
         }
 
-        private void SetDepositAreaSection() 
+        static void SetDepositAreaSection() 
         {
             _depositAreaSection.x = 0;
             _depositAreaSection.y = Screen.height / 3f;
@@ -319,7 +322,7 @@ namespace Picker3D.EditorSystem
             _depositAreaSection.height = Screen.height / 3f;     
         }
 
-        private void SetBottomSection() 
+        static void SetBottomSection() 
         {
             _bottomSection.x = 0;
             _bottomSection.y = (Screen.height / 3f) * 2f;
@@ -327,7 +330,7 @@ namespace Picker3D.EditorSystem
             _bottomSection.height = Screen.height / 3f;
         }
 
-        private void SetPlatformPrefabs()
+        static void SetPlatformPrefabs()
         {
             string[] guids = AssetDatabase.FindAssets("t:Prefab", new string[] { PLATFORM_PREFAB_PATH });
 
@@ -340,7 +343,7 @@ namespace Picker3D.EditorSystem
             } 
         }
 
-        private void SetDepositAreaPrefabs()
+        static void SetDepositAreaPrefabs()
         {
             string[] guids = AssetDatabase.FindAssets("t:Prefab", new string[] { DEPOSIT_AREA_PREFAB_PATH });
 
@@ -353,7 +356,7 @@ namespace Picker3D.EditorSystem
             }
         }
 
-        private void Dispose() 
+        static void Dispose() 
         {
             if (LevelParent != null) 
             {
