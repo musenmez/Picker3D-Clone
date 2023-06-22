@@ -8,6 +8,11 @@ namespace Picker3D.EditorSystem
 {
     public class LevelEditorWindow : EditorWindow
     {
+        public static GameObject LevelParent { get; private set; }
+        public static GameObject PlatformParent { get; private set; }
+        public static GameObject DepositAreaParent { get; private set; }
+        public static GameObject CollectablesParent { get; private set; }
+
         private Stack<LevelEditorActionType> EditorActions { get; set; } = new Stack<LevelEditorActionType>();
         private List<DepositArea> DepositAreaPrefabs { get; set; } = new List<DepositArea>();
         private List<string> DepositAreaPrefabNames { get; set; } = new List<string>();
@@ -39,12 +44,7 @@ namespace Picker3D.EditorSystem
 
         private Rect _platformSection;
         private Rect _depositAreaSection;
-        private Rect _bottomSection;
-
-        private GameObject _levelParent;
-        private GameObject _platformParent;
-        private GameObject _depositAreaParent;
-        private GameObject _collectablesParent;
+        private Rect _bottomSection;        
 
         [MenuItem("Picker3D/Level Editor Window")]
         public static void OpenWindow() 
@@ -101,20 +101,20 @@ namespace Picker3D.EditorSystem
 
         private void CreateLevelStructure() 
         {
-            _levelParent = new GameObject("Level Parent");
-            _levelParent.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+            LevelParent = new GameObject("Level Parent");
+            LevelParent.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
 
-            _platformParent = new GameObject("Platforms");
-            _platformParent.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-            _platformParent.transform.SetParent(_levelParent.transform);
+            PlatformParent = new GameObject("Platforms");
+            PlatformParent.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+            PlatformParent.transform.SetParent(LevelParent.transform);
 
-            _depositAreaParent = new GameObject("Deposit Areas");
-            _depositAreaParent.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-            _depositAreaParent.transform.SetParent(_levelParent.transform);
+            DepositAreaParent = new GameObject("Deposit Areas");
+            DepositAreaParent.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+            DepositAreaParent.transform.SetParent(LevelParent.transform);
 
-            _collectablesParent = new GameObject("Collectables");
-            _collectablesParent.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-            _collectablesParent.transform.SetParent(_levelParent.transform);
+            CollectablesParent = new GameObject("Collectables");
+            CollectablesParent.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+            CollectablesParent.transform.SetParent(LevelParent.transform);
         }
 
         private void DrawHandlers() 
@@ -165,7 +165,7 @@ namespace Picker3D.EditorSystem
             }
             Platform spawnedPlatform = (Platform)PrefabUtility.InstantiatePrefab(prefab);
             spawnedPlatform.transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
-            spawnedPlatform.transform.SetParent(_platformParent.transform);
+            spawnedPlatform.transform.SetParent(PlatformParent.transform);
             SpawnedPlaforms.Add(spawnedPlatform);
             EditorActions.Push(LevelEditorActionType.PlatformCreation);
         }
@@ -183,7 +183,7 @@ namespace Picker3D.EditorSystem
             }
             DepositArea spawnedDepositArea = (DepositArea)PrefabUtility.InstantiatePrefab(prefab);
             spawnedDepositArea.transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
-            spawnedDepositArea.transform.SetParent(_platformParent.transform);
+            spawnedDepositArea.transform.SetParent(PlatformParent.transform);
             spawnedDepositArea.Initialize(_requiredCollectable);
 
             SpawnedPlaforms.Add(spawnedDepositArea);
@@ -373,9 +373,9 @@ namespace Picker3D.EditorSystem
 
         private void Dispose() 
         {
-            if (_levelParent != null) 
+            if (LevelParent != null) 
             {
-                DestroyImmediate(_levelParent);
+                DestroyImmediate(LevelParent);
             }                
         }
 

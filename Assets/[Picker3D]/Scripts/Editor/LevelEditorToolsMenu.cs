@@ -12,7 +12,8 @@ namespace Picker3D.EditorSystem
         public static int SelectedTool { get; set; }
         static string[] ButtonLabels { get; } = new string[] { "None", "Erase", "Paint" };
 
-        private const float GRID_WIDTH = 300f;
+        public const float GRID_HEIGHT = 40f;
+        public const float GRID_WIDTH = 300f;
 
         static LevelEditorToolsMenu() 
         {
@@ -29,7 +30,7 @@ namespace Picker3D.EditorSystem
         {
             Handles.BeginGUI();
            
-            GUILayout.BeginArea(new Rect(0, sceneView.position.height - 40, sceneView.position.width, 100), EditorStyles.toolbar);
+            GUILayout.BeginArea(new Rect(0, sceneView.position.height - GRID_HEIGHT, sceneView.position.width, 100), EditorStyles.toolbar);
             {
                 SelectedTool = GUILayout.SelectionGrid(SelectedTool, ButtonLabels, 3, EditorStyles.toolbarButton, GUILayout.Width(GRID_WIDTH));
             }
