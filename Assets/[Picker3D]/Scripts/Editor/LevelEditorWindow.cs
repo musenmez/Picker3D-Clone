@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEditor;
 using Picker3D.Runtime;
 using UnityEngine.Events;
+using Picker3D.Models;
+using System.Linq;
 
 namespace Picker3D.EditorSystem 
 {  
@@ -14,6 +16,7 @@ namespace Picker3D.EditorSystem
         public static GameObject DepositAreaParent { get; private set; }
         public static GameObject CollectablesParent { get; private set; }
         public static bool IsOpened { get; private set; }
+        public static LevelData CurrentLevelData { get; private set; }
         public static UnityEvent OnOpened { get; } = new UnityEvent();
         public static UnityEvent OnClosed { get; } = new UnityEvent();
 
@@ -60,8 +63,11 @@ namespace Picker3D.EditorSystem
         [UnityEditor.Callbacks.DidReloadScripts]
         public static void CloseWindow()
         {
+            if (!CheckIfWindowOpen())
+                return;
+         
             LevelEditorWindow window = GetWindow<LevelEditorWindow>("Level Editor");          
-            window.Close();
+            window.Close();           
         }        
 
         private void OnDestroy()
@@ -75,7 +81,7 @@ namespace Picker3D.EditorSystem
             DrawPlatformSection();
             DrawDepositAreaSection();
             DrawButtomSection();
-        }
+        }  
 
         static void Initialize() 
         {
@@ -257,10 +263,22 @@ namespace Picker3D.EditorSystem
             {
                 Undo();
             }
-            if (GUILayout.Button("Save Level", GUILayout.Height(30)))
+
+            if (CurrentLevelData == null)
             {
-                
+                if (GUILayout.Button("Save Level", GUILayout.Height(30)))
+                {
+                    CurrentLevelData = LevelEditorSave.SaveLevel();
+                }
             }
+            else
+            {
+                if (GUILayout.Button("Update Level", GUILayout.Height(30)))
+                {
+                    LevelEditorSave.UpdateLevel(CurrentLevelData);
+                }
+            }
+            
             GUILayout.EndHorizontal();
             GUILayout.EndArea();
         }
@@ -356,8 +374,15 @@ namespace Picker3D.EditorSystem
             }
         }
 
+        static bool CheckIfWindowOpen() 
+        {
+            LevelParent = GameObject.Find("Level Parent");
+            return IsOpened || LevelParent != null;
+        }
+
         static void Dispose() 
         {
+            LevelParent = GameObject.Find("Level Parent");
             if (LevelParent != null) 
             {
                 DestroyImmediate(LevelParent);

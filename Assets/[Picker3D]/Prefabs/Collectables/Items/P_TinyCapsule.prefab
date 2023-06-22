@@ -87,7 +87,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7444022124724124661}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: a3c739be4eca0e343973b498db2e6aa3, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
@@ -104,7 +104,7 @@ PrefabInstance:
     - target: {fileID: 2477470880092505885, guid: 944882c73904082449970b706ccd6f74,
         type: 3}
       propertyPath: m_Name
-      value: P_TinyCube 1
+      value: P_TinyCapsule
       objectReference: {fileID: 0}
     - target: {fileID: 3584062622630026313, guid: 944882c73904082449970b706ccd6f74,
         type: 3}
