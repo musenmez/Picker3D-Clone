@@ -394,6 +394,7 @@ namespace Picker3D.EditorSystem
                 return;
 
             SpawnedDepositAreas.Remove(depositArea);
+            SpawnedPlaforms.Remove(depositArea);
             DestroyImmediate(depositArea.gameObject);
         }
 
