@@ -34,6 +34,7 @@ namespace Picker3D.UI
             LevelManager.Instance.OnLevelCompleted.AddListener(OnLevelCompleted);
             LevelManager.Instance.OnLevelStarted.AddListener(ShowPanel);
             LevelManager.Instance.OnLevelFailed.AddListener(HidePanel);
+            LevelManager.Instance.OnLevelRestarted.AddListener(Initialize);
             CurrencyManager.Instance.OnSuccessRewardClaimed.AddListener(ShowPanel);
             PlayerManager.Instance.OnDepositCompleted.AddListener(FillSegment);
         }
@@ -42,8 +43,9 @@ namespace Picker3D.UI
         {
             base.OnDisable();
             LevelManager.Instance.OnLevelCompleted.RemoveListener(OnLevelCompleted);
-            LevelManager.Instance.OnLevelStarted.RemoveListener(ShowPanel);            
-            LevelManager.Instance.OnLevelFailed.RemoveListener(HidePanel);
+            LevelManager.Instance.OnLevelStarted.RemoveListener(ShowPanel);
+            LevelManager.Instance.OnLevelFailed.AddListener(HidePanel);
+            LevelManager.Instance.OnLevelRestarted.AddListener(Initialize);
             CurrencyManager.Instance.OnSuccessRewardClaimed.RemoveListener(ShowPanel);
             PlayerManager.Instance.OnDepositCompleted.RemoveListener(FillSegment);
         }

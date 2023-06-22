@@ -12,9 +12,9 @@ namespace Picker3D.EditorSystem
         public static bool IsMouseAvailable { get; private set; }
         public static Vector3 CurrentHandlePosition = Vector3.zero;
 
-        static readonly Color PaintColor = Color.green;
-        static readonly Color EraseColor = Color.red;
         static readonly Vector3 SnapOffset = new Vector3(0.2f, 0f, 0.2f);
+        static readonly Color PaintColor = Color.green;
+        static readonly Color EraseColor = Color.red;        
 
         private const float CUBE_WIDTH = 0.25f;    
 

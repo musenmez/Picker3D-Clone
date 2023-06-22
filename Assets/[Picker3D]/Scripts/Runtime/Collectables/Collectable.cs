@@ -15,7 +15,8 @@ namespace Picker3D.Runtime
         private PoolObject _poolObject;
         private PoolObject PoolObject => _poolObject == null ? _poolObject = GetComponent<PoolObject>() : _poolObject;
         public bool IsCollected { get; private set; }
-        public UnityEvent OnCollected { get; private set; } = new UnityEvent();        
+        public UnityEvent OnCollected { get; private set; } = new UnityEvent();
+        public UnityEvent OnDisposed { get; private set; } = new UnityEvent();
 
         private const float MIN_DISPOSE_DELAY = 0.75f;
         private const float MAX_DISPOSE_DELAY = 1.25f;
@@ -47,12 +48,17 @@ namespace Picker3D.Runtime
         private void Initialize() 
         {
             IsCollected = false;
-            Rigidbody.velocity = Vector3.zero;
+            Rigidbody.isKinematic = false;
+            Rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         }
 
-        private void Dispose() 
+        private void Dispose()
         {
-            Rigidbody.velocity = Vector3.zero;
+            OnDisposed.Invoke();
+
+            Rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+            Rigidbody.isKinematic = true;
+           
             gameObject.SetActive(false);
         }
     }

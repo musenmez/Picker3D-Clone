@@ -20,7 +20,8 @@ namespace Picker3D.EditorSystem
 
             levelData.LevelItemDatas = GetLevelItemDatas();
             levelData.DepositItemDatas = GetDepostiAreaLevelItemDatas();
-
+            levelData.GroundMaterial = LevelEditorWindow.GroundMaterial;
+            levelData.BorderMaterial = LevelEditorWindow.BorderMaterial;
             AssetDatabase.CreateAsset(levelData, uniqueAssetPath);            
             AssetDatabase.SaveAssets();        
 
