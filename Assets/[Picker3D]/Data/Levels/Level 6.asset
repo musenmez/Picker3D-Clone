@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5fede3793543854fb922bebfe9e5618, type: 3}
   m_Name: Level 6
   m_EditorClassIdentifier: 
-  GroundMaterial: {fileID: 2100000, guid: e5396792f4bd98e49a3895e0a9db2d7a, type: 2}
+  GroundMaterial: {fileID: 2100000, guid: bf91202648a63624398cf0d7cd56fe6d, type: 2}
   BorderMaterial: {fileID: 2100000, guid: 419f9f40b51e355459401dad2db80c92, type: 2}
   DepositItemDatas:
   - PoolID: 30
