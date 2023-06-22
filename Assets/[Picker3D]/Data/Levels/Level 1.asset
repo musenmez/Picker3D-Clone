@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a5fede3793543854fb922bebfe9e5618, type: 3}
-  m_Name: Level 2
+  m_Name: Level 1
   m_EditorClassIdentifier: 
   GroundMaterial: {fileID: 2100000, guid: fd2aa18dc8e1fd74aa9ef299bb640224, type: 2}
   BorderMaterial: {fileID: 2100000, guid: 419f9f40b51e355459401dad2db80c92, type: 2}

@@ -94,9 +94,10 @@ namespace Picker3D.Runtime
 
         private LevelData GetLevelData(int levelIndex) 
         {
-            if (levelIndex < LevelDatas.Count - 1)
+            int levelDataIndex = levelIndex - 1;
+            if (levelDataIndex < LevelDatas.Count)
             {
-                return LevelDatas[levelIndex];
+                return LevelDatas[levelDataIndex];
             }
 
             List<LevelData> levelDatas = new List<LevelData>(LevelDatas);

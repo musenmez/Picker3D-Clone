@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine.Events;
 using Picker3D.Models;
 using Picker3D.Managers;
+using Picker3D.Interfaces;
 
 namespace Picker3D.Runtime
 {
@@ -61,7 +62,9 @@ namespace Picker3D.Runtime
                 LevelItems.Add(levelItem);
 
                 DepositArea depositArea = levelItem.GetComponent<DepositArea>();
-                depositArea.Initialize(depositAreaItemData.RequiredCollectable);                
+                depositArea.Initialize(depositAreaItemData.RequiredCollectable);
+
+                SetPlatformMaterial(levelItem, LevelData);
             }
 
             List<LevelItemData> levelItemDatas = new List<LevelItemData>(LevelData.LevelItemDatas);
@@ -71,8 +74,20 @@ namespace Picker3D.Runtime
                 PoolObject levelItem = PoolingManager.Instance.Instantiate(levelItemData.PoolID, spawnPosition, levelItemData.Rotation);
                 levelItem.transform.SetParent(transform);
                 LevelItems.Add(levelItem);
+
+                SetPlatformMaterial(levelItem, LevelData);
             }
         }       
+
+        private void SetPlatformMaterial(PoolObject levelItem, LevelData levelData) 
+        {
+            Platform platform = levelItem.GetComponent<Platform>();
+            if (platform != null)
+            {
+                platform.SetBorderMaterial(LevelData.BorderMaterial);
+                platform.SetGroundMaterial(LevelData.GroundMaterial);
+            }
+        }
 
         private void SortPlatforms() 
         {
