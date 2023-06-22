@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using NaughtyAttributes;
 using Picker3D.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +15,9 @@ namespace Picker3D.Runtime
         public int RequiredCollectable { get{ return requiredCollectable; } set { requiredCollectable = value; } }
         public int CurrentCollectableAmount { get; private set; }
         public List<IDepositorBlocker> DepositorBlockers { get; private set; } = new List<IDepositorBlocker>();
-        public UnityEvent OnInitialized { get; } = new UnityEvent();
+        
+        //Editor and Runtime
+        public UnityEvent OnInitialized = new UnityEvent();
         public UnityEvent OnDepositStarted { get; } = new UnityEvent();
         public UnityEvent OnDepositCompleted { get; } = new UnityEvent();
         public UnityEvent OnDepositFailed { get; } = new UnityEvent();
@@ -22,8 +25,8 @@ namespace Picker3D.Runtime
 
         public const float DEPOSIT_DURATION = 2.5f;
 
-        [Header("Deposit Area")]
-        [SerializeField] private int requiredCollectable;        
+        [Header("Deposit Area")]        
+        [SerializeField, Range(0, 100)] private int requiredCollectable;        
 
         private IDepositor _lastDepositor;
         private Tween _depositTimerTween;       

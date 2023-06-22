@@ -19,17 +19,16 @@ namespace Picker3D.Runtime
 
         private void OnEnable()
         {
-            DepositArea.OnCollectableAmountChanged.AddListener(UpdateText);
-            DepositArea.OnInitialized.AddListener(UpdateText);
+            DepositArea.OnCollectableAmountChanged.AddListener(UpdateText);            
         }
 
         private void OnDisable() 
         {
-            DepositArea.OnCollectableAmountChanged.RemoveListener(UpdateText);
-            DepositArea.OnInitialized.RemoveListener(UpdateText);
+            DepositArea.OnCollectableAmountChanged.RemoveListener(UpdateText);           
         }
 
-        private void UpdateText() 
+        //Listens Unity Editor Event
+        public void UpdateText() 
         {
             string text = DepositArea.CurrentCollectableAmount + "/" + DepositArea.RequiredCollectable;
             depositTextMesh.SetText(text);
