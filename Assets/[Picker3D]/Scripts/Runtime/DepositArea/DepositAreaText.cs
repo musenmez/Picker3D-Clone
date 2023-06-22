@@ -10,11 +10,16 @@ namespace Picker3D.Runtime
         private DepositArea _depositArea;
         private DepositArea DepositArea => _depositArea == null ? _depositArea = GetComponentInParent<DepositArea>() : _depositArea;
 
-        [SerializeField] private TextMeshPro depositTextMesh; 
+        [SerializeField] private TextMeshPro depositTextMesh;
+
+        private readonly WaitForSeconds UpdateDelay = new WaitForSeconds(0.07f);
+
+        private Coroutine _updateCoroutine;
+        private int _currentCollectableAmount = 0;
 
         private void Start()
         {
-            UpdateText();
+            Initialize();
         }
 
         private void OnEnable()
@@ -27,10 +32,37 @@ namespace Picker3D.Runtime
             DepositArea.OnCollectableAmountChanged.RemoveListener(UpdateText);           
         }
 
-        //Listens Unity Editor Event
-        public void UpdateText() 
+        //Also Listens Unity Editor Event
+        public void Initialize() 
         {
-            string text = DepositArea.CurrentCollectableAmount + "/" + DepositArea.RequiredCollectable;
+            _currentCollectableAmount = 0;
+            SetText();
+        }
+
+        private void UpdateText() 
+        {
+            if (_updateCoroutine != null)
+                StopCoroutine(_updateCoroutine);
+
+            _updateCoroutine = StartCoroutine(UpdateCoroutine());
+        }
+
+        private IEnumerator UpdateCoroutine() 
+        {
+            while (true) 
+            {
+                if (_currentCollectableAmount >= DepositArea.CurrentCollectableAmount)
+                    yield break;
+
+                _currentCollectableAmount++;
+                SetText();
+                yield return UpdateDelay;
+            }
+        }
+
+        private void SetText() 
+        {
+            string text = _currentCollectableAmount + "/" + DepositArea.RequiredCollectable;
             depositTextMesh.SetText(text);
         }
     }
